@@ -1,5 +1,7 @@
 let errorsDB = [];
 
+const GITHUB_BASE = "https://raw.githubusercontent.com/Lavalloir/ErrorExplainer/main/errors";
+
 const ERROR_FILES = [
   "php", "symfony", "laravel", "react", "javascript", "typescript",
   "nodejs", "mysql", "doctrine", "csharp", "axios", "docker",
@@ -17,19 +19,34 @@ const TECH_TO_FILE = {
 
 async function loadAllDB() {
   if (errorsDB.length > 0) return;
-  const all = await Promise.all(
-    ERROR_FILES.map(name =>
-      fetch(chrome.runtime.getURL(`errors/${name}.json`)).then(r => r.json())
-    )
-  );
-  errorsDB = all.flat();
+  try {
+    const all = await Promise.all(
+      ERROR_FILES.map(name =>
+        fetch(`${GITHUB_BASE}/${name}.json`).then(r => r.json())
+      )
+    );
+    errorsDB = all.flat();
+  } catch {
+    // Fallback : fichiers locaux si GitHub inaccessible
+    const all = await Promise.all(
+      ERROR_FILES.map(name =>
+        fetch(chrome.runtime.getURL(`errors/${name}.json`)).then(r => r.json())
+      )
+    );
+    errorsDB = all.flat();
+  }
 }
 
 async function loadTechDB(tech) {
   const file = TECH_TO_FILE[tech];
   if (!file) return await loadAllDB();
-  const res = await fetch(chrome.runtime.getURL(`errors/${file}.json`));
-  errorsDB = await res.json();
+  try {
+    const res = await fetch(`${GITHUB_BASE}/${file}.json`);
+    errorsDB = await res.json();
+  } catch {
+    const res = await fetch(chrome.runtime.getURL(`errors/${file}.json`));
+    errorsDB = await res.json();
+  }
 }
 
 function techToBadgeClass(tech) {
@@ -138,7 +155,6 @@ async function init() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   const session = await chrome.storage.session.get("pendingError");
 
-  // Priorité 1 : clic droit sur sélection
   if (session.pendingError) {
     document.getElementById("errorInput").value = session.pendingError;
     chrome.storage.session.remove("pendingError");
@@ -149,10 +165,8 @@ async function init() {
 
   if (!tab?.id) return;
 
-  // Priorité 2 : scan de la page au clic sur l'extension
   chrome.tabs.sendMessage(tab.id, { action: "scanPage" }, async (res) => {
     if (chrome.runtime.lastError || !res) {
-      // Priorité 3 : texte sélectionné
       chrome.tabs.sendMessage(tab.id, { action: "getSelection" }, async (sel) => {
         if (chrome.runtime.lastError || !sel?.text) return;
         document.getElementById("errorInput").value = sel.text;
@@ -162,7 +176,6 @@ async function init() {
       return;
     }
 
-    // Page d'erreur détectée
     document.getElementById("errorInput").value = res.message;
     await loadTechDB(res.tech);
     renderResults(findMatches(res.message));
