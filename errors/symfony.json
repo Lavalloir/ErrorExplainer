@@ -194,5 +194,12 @@
     "pattern": "The file could not be found",
     "explication": "Un fichier uploadé ou référencé n'existe pas au chemin indiqué.",
     "conseil": "Vérifie le chemin de stockage dans ta config. Assure-toi que le dossier `public/uploads/` existe et est accessible en écriture."
+  },
+  {
+    "id": "SYM-29",
+    "tech": "Symfony",
+    "pattern": "Argument type mismatch",
+    "explication": "Le type de l'argument passé à une méthode ne correspond pas au type attendu dans la signature.",
+    "conseil": "Vérifie le type attendu dans la définition de la méthode. Souvent un string passé là où un int est attendu, ou un tableau au lieu d'un objet."
   }
 ]
