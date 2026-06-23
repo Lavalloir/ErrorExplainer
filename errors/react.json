@@ -1,128 +1,42 @@
 [
-  {
-    "id": "REA-1",
-    "tech": "React",
-    "pattern": "Cannot read propert.+ of undefined",
-    "explication": "Tu essaies d'accéder à une propriété d'une variable qui vaut `undefined`. Souvent les données ne sont pas encore chargées.",
-    "conseil": "Ajoute une vérification : `{data && data.propriete}` ou utilise l'optional chaining : `data?.propriete`."
-  },
-  {
-    "id": "REA-2",
-    "tech": "React",
-    "pattern": "Cannot read propert.+ of null",
-    "explication": "Même chose que undefined mais la variable vaut explicitement `null`.",
-    "conseil": "Utilise `data?.propriete ?? 'valeur par défaut'` ou vérifie l'état initial de ton state/prop."
-  },
-  {
-    "id": "REA-3",
-    "tech": "React",
-    "pattern": "Each child in a list should have a unique",
-    "explication": "React a besoin d'un `key` unique sur chaque élément d'une liste pour optimiser le rendu.",
-    "conseil": "Ajoute `key={item.id}` sur l'élément racine dans ton `.map()`. N'utilise pas l'index si la liste peut changer d'ordre."
-  },
-  {
-    "id": "REA-4",
-    "tech": "React",
-    "pattern": "Too many re-renders",
-    "explication": "Ton composant se re-rend en boucle infinie. Un setState est probablement appelé directement dans le render.",
-    "conseil": "Ne mets pas de `setState` directement dans le corps du composant. Utilise `useEffect` avec des dépendances correctes."
-  },
-  {
-    "id": "REA-5",
-    "tech": "React",
-    "pattern": "Invalid hook call",
-    "explication": "Tu appelles un hook en dehors d'un composant fonctionnel, ou tu as deux versions de React chargées.",
-    "conseil": "Les hooks ne peuvent être appelés que dans des composants React ou d'autres hooks. Vérifie aussi que React n'est pas en double dans node_modules."
-  },
-  {
-    "id": "REA-6",
-    "tech": "React",
-    "pattern": "not wrapped in act",
-    "explication": "Dans tes tests, une mise à jour de state se fait en dehors d'un `act()`.",
-    "conseil": "Entoure les actions asynchrones dans tes tests avec `await act(async () => { ... })`."
-  },
-  {
-    "id": "REA-7",
-    "tech": "React",
-    "pattern": "does not recognize the .+ prop on a DOM element",
-    "explication": "Tu passes une prop personnalisée directement à un élément HTML natif.",
-    "conseil": "Renomme ta prop avec un préfixe `data-` ou filtre-la avant de la passer à l'élément HTML."
-  },
-  {
-    "id": "REA-8",
-    "tech": "React",
-    "pattern": "Nothing was returned from render",
-    "explication": "Ton composant ne retourne rien (ou `undefined`).",
-    "conseil": "Assure-toi que ton composant retourne bien du JSX, même `null` si tu ne veux rien afficher."
-  },
-  {
-    "id": "REA-9",
-    "tech": "React",
-    "pattern": "Encountered two children with the same key",
-    "explication": "Deux éléments dans une liste ont le même `key`, ce qui perturbe React.",
-    "conseil": "Assure-toi que les IDs que tu utilises comme key sont vraiment uniques dans la liste."
-  },
-  {
-    "id": "REA-10",
-    "tech": "React",
-    "pattern": "PropTypes",
-    "explication": "Une prop reçoit un type différent de celui attendu.",
-    "conseil": "Vérifie ce que tu passes au composant. Si tu utilises TypeScript, corrige le type de la prop."
-  },
-  {
-    "id": "REA-11",
-    "tech": "React",
-    "pattern": "Can't perform a React state update on an unmounted component",
-    "explication": "Tu mets à jour le state d'un composant qui a déjà été démonté (souvent après un appel async).",
-    "conseil": "Dans ton `useEffect`, utilise une variable `isMounted` et vérifie-la avant le `setState`. Ou utilise un AbortController pour annuler le fetch."
-  },
-  {
-    "id": "REA-12",
-    "tech": "React",
-    "pattern": "Hydration failed|hydration error",
-    "explication": "Le HTML généré côté serveur (SSR) ne correspond pas à ce que React génère côté client.",
-    "conseil": "Vérifie les conditions qui rendraient différemment en SSR vs client (dates, `window`, `localStorage`). Entoure ces parties dans un `useEffect`."
-  },
-  {
-    "id": "REA-13",
-    "tech": "React",
-    "pattern": "Element type is invalid",
-    "explication": "Tu essaies de rendre un composant qui est `undefined` ou `null` — souvent un import raté.",
-    "conseil": "Vérifie ton import : `import MonComposant from './MonComposant'` (default export) vs `import { MonComposant } from './MonComposant'` (named export)."
-  },
-  {
-    "id": "REA-14",
-    "tech": "React",
-    "pattern": "Objects are not valid as a React child",
-    "explication": "Tu essaies d'afficher un objet directement dans le JSX — React ne sait pas comment le rendre.",
-    "conseil": "Accède à une propriété spécifique de l'objet : `{monObjet.nom}` au lieu de `{monObjet}`. Ou utilise `JSON.stringify(monObjet)` pour le debug."
-  },
-  {
-    "id": "REA-15",
-    "tech": "React",
-    "pattern": "Maximum update depth exceeded",
-    "explication": "Boucle infinie de renders — un useEffect met à jour un state qui redéclenche le useEffect.",
-    "conseil": "Vérifie le tableau de dépendances de ton `useEffect`. Si tu mets à jour un state qui est dans les dépendances, tu crées une boucle. Ajoute une condition ou retire la dépendance."
-  },
-  {
-    "id": "REA-16",
-    "tech": "React",
-    "pattern": "Cannot update a component .+ while rendering a different component",
-    "explication": "Un composant met à jour le state d'un autre composant pendant la phase de rendu.",
-    "conseil": "Déplace la mise à jour du state dans un `useEffect` ou dans un gestionnaire d'événement, pas directement dans le corps du composant."
-  },
-  {
-    "id": "REA-17",
-    "tech": "React",
-    "pattern": "useRef",
-    "explication": "Mauvaise utilisation de `useRef` — tu accèdes à `.current` avant que le composant soit monté, ou tu l'utilises comme un state.",
-    "conseil": "Accède à `ref.current` uniquement dans un `useEffect` ou dans un gestionnaire d'événement, jamais directement dans le render."
-  },
-  {
-    "id": "REA-18",
-    "tech": "React",
-    "pattern": "React.Children.only expected to receive a single React element child",
-    "explication": "Un composant qui n'accepte qu'un seul enfant en a reçu plusieurs.",
-    "conseil": "Entoure tes éléments dans une `<div>` ou un Fragment `<>...</>` pour n'avoir qu'un seul enfant."
-  }
+  {"id":"REA-1","tech":"React","pattern":"Cannot read propert.+ of undefined","explication":"Tu essaies d'accéder à une propriété d'une variable qui vaut `undefined`. Souvent les données ne sont pas encore chargées.","conseil":"Ajoute une vérification : `{data && data.propriete}` ou utilise l'optional chaining : `data?.propriete`."},
+  {"id":"REA-2","tech":"React","pattern":"Cannot read propert.+ of null","explication":"Même chose que undefined mais la variable vaut explicitement `null`.","conseil":"Utilise `data?.propriete ?? 'valeur par défaut'` ou vérifie l'état initial de ton state/prop."},
+  {"id":"REA-3","tech":"React","pattern":"Each child in a list should have a unique","explication":"React a besoin d'un `key` unique sur chaque élément d'une liste pour optimiser le rendu.","conseil":"Ajoute `key={item.id}` sur l'élément racine dans ton `.map()`. N'utilise pas l'index si la liste peut changer d'ordre."},
+  {"id":"REA-4","tech":"React","pattern":"Too many re-renders","explication":"Ton composant se re-rend en boucle infinie. Un setState est probablement appelé directement dans le render.","conseil":"Ne mets pas de `setState` directement dans le corps du composant. Utilise `useEffect` avec des dépendances correctes."},
+  {"id":"REA-5","tech":"React","pattern":"Invalid hook call","explication":"Tu appelles un hook en dehors d'un composant fonctionnel, ou tu as deux versions de React chargées.","conseil":"Les hooks ne peuvent être appelés que dans des composants React ou d'autres hooks. Vérifie aussi que React n'est pas en double dans node_modules."},
+  {"id":"REA-6","tech":"React","pattern":"not wrapped in act","explication":"Dans tes tests, une mise à jour de state se fait en dehors d'un `act()`.","conseil":"Entoure les actions asynchrones dans tes tests avec `await act(async () => { ... })`."},
+  {"id":"REA-7","tech":"React","pattern":"does not recognize the .+ prop on a DOM element","explication":"Tu passes une prop personnalisée directement à un élément HTML natif.","conseil":"Renomme ta prop avec un préfixe `data-` ou filtre-la avant de la passer à l'élément HTML."},
+  {"id":"REA-8","tech":"React","pattern":"Nothing was returned from render","explication":"Ton composant ne retourne rien (ou `undefined`).","conseil":"Assure-toi que ton composant retourne bien du JSX, même `null` si tu ne veux rien afficher."},
+  {"id":"REA-9","tech":"React","pattern":"Encountered two children with the same key","explication":"Deux éléments dans une liste ont le même `key`, ce qui perturbe React.","conseil":"Assure-toi que les IDs que tu utilises comme key sont vraiment uniques dans la liste."},
+  {"id":"REA-10","tech":"React","pattern":"PropTypes","explication":"Une prop reçoit un type différent de celui attendu.","conseil":"Vérifie ce que tu passes au composant. Si tu utilises TypeScript, corrige le type de la prop."},
+  {"id":"REA-11","tech":"React","pattern":"Can't perform a React state update on an unmounted component","explication":"Tu mets à jour le state d'un composant qui a déjà été démonté (souvent après un appel async).","conseil":"Dans ton `useEffect`, utilise un AbortController pour annuler le fetch quand le composant se démonte."},
+  {"id":"REA-12","tech":"React","pattern":"Hydration failed|hydration error","explication":"Le HTML généré côté serveur (SSR) ne correspond pas à ce que React génère côté client.","conseil":"Vérifie les conditions qui rendraient différemment en SSR vs client (dates, `window`, `localStorage`). Entoure ces parties dans un `useEffect`."},
+  {"id":"REA-13","tech":"React","pattern":"Element type is invalid","explication":"Tu essaies de rendre un composant qui est `undefined` ou `null` — souvent un import raté.","conseil":"Vérifie ton import : `import MonComposant from './MonComposant'` (default export) vs `import { MonComposant } from './MonComposant'` (named export)."},
+  {"id":"REA-14","tech":"React","pattern":"Objects are not valid as a React child","explication":"Tu essaies d'afficher un objet directement dans le JSX — React ne sait pas comment le rendre.","conseil":"Accède à une propriété spécifique : `{monObjet.nom}` au lieu de `{monObjet}`. Ou utilise `JSON.stringify(monObjet)` pour le debug."},
+  {"id":"REA-15","tech":"React","pattern":"Maximum update depth exceeded","explication":"Boucle infinie de renders — un useEffect met à jour un state qui redéclenche le useEffect.","conseil":"Vérifie le tableau de dépendances de ton `useEffect`. Si tu mets à jour un state qui est dans les dépendances, tu crées une boucle."},
+  {"id":"REA-16","tech":"React","pattern":"Cannot update a component .+ while rendering a different component","explication":"Un composant met à jour le state d'un autre composant pendant la phase de rendu.","conseil":"Déplace la mise à jour du state dans un `useEffect` ou dans un gestionnaire d'événement."},
+  {"id":"REA-17","tech":"React","pattern":"React.Children.only expected to receive a single React element child","explication":"Un composant qui n'accepte qu'un seul enfant en a reçu plusieurs.","conseil":"Entoure tes éléments dans une `<div>` ou un Fragment `<>...</>` pour n'avoir qu'un seul enfant."},
+  {"id":"REA-18","tech":"React","pattern":"useEffect.*missing dependency|React Hook useEffect","explication":"Un warning ESLint : tu utilises une variable dans `useEffect` sans la déclarer dans le tableau de dépendances.","conseil":"Ajoute la variable manquante dans le tableau de dépendances. Si ça crée une boucle, utilise `useCallback` ou `useRef` pour stabiliser la référence."},
+  {"id":"REA-19","tech":"React","pattern":"Warning: Each child in a list","explication":"Des éléments dans une liste n'ont pas de prop `key` unique.","conseil":"Ajoute `key={item.id}` ou une valeur unique sur chaque élément dans le `.map()`. Évite d'utiliser l'index comme key si la liste peut changer."},
+  {"id":"REA-20","tech":"React","pattern":"Rendered more hooks than during the previous render","explication":"Le nombre de hooks appelés change entre les renders — probablement un hook dans une condition ou une boucle.","conseil":"Les hooks doivent toujours être appelés dans le même ordre. Ne mets jamais de hook dans un `if`, une boucle, ou une fonction imbriquée."},
+  {"id":"REA-21","tech":"React","pattern":"useContext.*undefined|createContext","explication":"Tu utilises `useContext` mais le composant n'est pas enveloppé dans le Provider correspondant.","conseil":"Vérifie que le composant qui utilise `useContext` est bien un enfant (direct ou indirect) du `<MonContext.Provider>`."},
+  {"id":"REA-22","tech":"React","pattern":"forwardRef.*render.*is not a function","explication":"`React.forwardRef` attend une fonction comme argument mais reçoit autre chose.","conseil":"La syntaxe correcte : `React.forwardRef((props, ref) => <div ref={ref} {...props} />)`. Vérifie que tu passes bien une fonction."},
+  {"id":"REA-23","tech":"React","pattern":"useState.*cannot update during an existing state transition","explication":"Tu appelles `setState` pendant le rendu d'un autre composant.","conseil":"Déplace l'appel `setState` dans un gestionnaire d'événement ou un `useEffect`, jamais directement dans le JSX ou pendant le rendu."},
+  {"id":"REA-24","tech":"React","pattern":"act.*warning.*test","explication":"Dans tes tests React, des mises à jour de state ne sont pas enveloppées dans `act()`.","conseil":"Utilise `@testing-library/react` qui gère `act()` automatiquement. Pour les updates async : `await waitFor(() => expect(...))`."},
+  {"id":"REA-25","tech":"React","pattern":"lazy.*Suspense","explication":"Tu utilises `React.lazy()` sans `<Suspense>` pour gérer le chargement.","conseil":"Entoure le composant lazy avec `<Suspense fallback={<div>Chargement...</div>}>`. Le fallback est affiché pendant le chargement du composant."},
+  {"id":"REA-26","tech":"React","pattern":"useReducer.*dispatch","explication":"Problème avec `useReducer` — le reducer retourne `undefined` ou l'action n'est pas reconnue.","conseil":"Assure-toi que ton reducer retourne toujours un état, même pour les actions inconnues : `default: return state`. Vérifie le `type` des actions dispatchées."},
+  {"id":"REA-27","tech":"React","pattern":"memo.*useMemo.*useCallback.*dep","explication":"Mauvaise utilisation de la mémoïsation — les dépendances changent à chaque render, rendant la mémoïsation inutile.","conseil":"Les objets et fonctions créés inline changent de référence à chaque render. Mémoïse-les avec `useMemo` ou `useCallback` avant de les passer en dépendance."},
+  {"id":"REA-28","tech":"React","pattern":"ref.*null.*current","explication":"Tu accèdes à `ref.current` alors qu'il est null — soit le composant n'est pas monté, soit le ref n'est pas attaché.","conseil":"Accède à `ref.current` uniquement dans un `useEffect` (après le montage) ou dans un gestionnaire d'événement, jamais dans le render."},
+  {"id":"REA-29","tech":"React","pattern":"Portal.*container is not a valid container","explication":"L'élément DOM passé à `ReactDOM.createPortal()` n'existe pas ou n'est pas dans le DOM.","conseil":"Vérifie que l'élément cible existe dans le DOM. Pour les modals, utilise `document.getElementById('modal-root')` et assure-toi que cet élément est dans ton `index.html`."},
+  {"id":"REA-30","tech":"React","pattern":"Warning: validateDOMNesting","explication":"Tu imbriques des éléments HTML d'une façon qui n'est pas valide selon les specs HTML (ex: `<div>` dans un `<p>`).","conseil":"Lis le message qui indique quel élément est mal imbriqué. Les `<p>` ne peuvent contenir que des éléments inline. Remplace par `<div>` si tu as besoin de blocs."},
+  {"id":"REA-31","tech":"React","pattern":"Component .+ is defined but never used","explication":"ESLint détecte un composant importé ou défini mais pas utilisé dans le fichier.","conseil":"Supprime l'import inutile ou utilise le composant. Configure `react/jsx-uses-react` dans ESLint si tu as des faux positifs."},
+  {"id":"REA-32","tech":"React","pattern":"Function components cannot be given refs","explication":"Tu essaies de passer une `ref` à un composant fonctionnel qui ne l'accepte pas.","conseil":"Enveloppe le composant avec `React.forwardRef()` pour qu'il puisse accepter et transmettre la ref : `const MonComposant = React.forwardRef((props, ref) => ...)`."},
+  {"id":"REA-33","tech":"React","pattern":"cannot call hooks outside of a function component","explication":"Tu appelles un hook React (useState, useEffect...) en dehors d'un composant fonctionnel.","conseil":"Les hooks ne peuvent être utilisés que dans des composants fonctionnels React ou dans des hooks personnalisés. Pas dans des classes, des callbacks ou des modules."},
+  {"id":"REA-34","tech":"React","pattern":"Minified React error","explication":"React en mode production a généré une erreur minifiée. Le message est cryptique car le code est minifié.","conseil":"Va sur https://react.dev/errors et entre le numéro d'erreur pour voir le message complet. Ou teste en mode développement pour avoir le message lisible."},
+  {"id":"REA-35","tech":"React","pattern":"key.*index.*warning|using index as key","explication":"Tu utilises l'index du tableau comme `key` dans une liste, ce qui peut causer des bugs lors de réordonnancement.","conseil":"Utilise un identifiant unique et stable de tes données comme key (`item.id`, `item.slug`). L'index n'est acceptable que pour des listes statiques qui ne changent jamais."},
+  {"id":"REA-36","tech":"React","pattern":"useLayoutEffect.*SSR|useLayoutEffect does nothing on the server","explication":"`useLayoutEffect` ne fonctionne pas côté serveur en SSR.","conseil":"Remplace `useLayoutEffect` par `useEffect` si possible, ou utilise un pattern `isClient` : déclare l'état à false et passe-le à true dans un `useEffect`."},
+  {"id":"REA-37","tech":"React","pattern":"Unexpected application of useEffect|Rules of Hooks","explication":"Une règle des hooks est violée — hook conditionnel, dans une boucle, ou dans une fonction non-composant.","conseil":"Les hooks doivent être appelés au niveau supérieur du composant, toujours dans le même ordre, jamais dans des conditions ou des boucles."},
+  {"id":"REA-38","tech":"React","pattern":"setState.*unmounted|memory leak","explication":"Tu mets à jour le state après que le composant a été démonté, causant potentiellement une fuite mémoire.","conseil":"Utilise un AbortController pour annuler les requêtes async, ou un flag `isMounted` pour conditionner le setState."},
+  {"id":"REA-39","tech":"React","pattern":"Warning: An update to .+ inside a test","explication":"Une mise à jour de state se produit en dehors de `act()` dans un test.","conseil":"Entoure les interactions qui déclenchent des updates dans `act()` ou utilise `waitFor()` de Testing Library."},
+  {"id":"REA-40","tech":"React","pattern":"Cannot find namespace .+|JSX element .+ has no corresponding closing tag","explication":"Erreur JSX — balise non fermée ou namespace TypeScript manquant pour JSX.","conseil":"Vérifie que toutes tes balises JSX sont fermées (`<img />`, `<br />`). Si c'est une erreur TypeScript, vérifie que `jsx` est bien configuré dans `tsconfig.json`."}
 ]

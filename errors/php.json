@@ -1,149 +1,52 @@
 [
-  {
-    "id": "PHP-1",
-    "tech": "PHP",
-    "pattern": "Call to undefined function",
-    "explication": "Tu appelles une fonction qui n'existe pas. Vérifie l'orthographe, ou que l'extension PHP requise est bien activée.",
-    "conseil": "Regarde si tu as oublié un `use` ou un `require`, ou si la fonction vient d'une lib non installée."
-  },
-  {
-    "id": "PHP-2",
-    "tech": "PHP",
-    "pattern": "Call to a member function .+ on null",
-    "explication": "Tu essaies d'appeler une méthode sur une variable qui vaut `null`. L'objet n'a pas été initialisé ou la requête n'a rien retourné.",
-    "conseil": "Ajoute un `if ($objet !== null)` avant d'appeler la méthode, ou vérifie pourquoi ta requête retourne null."
-  },
-  {
-    "id": "PHP-3",
-    "tech": "PHP",
-    "pattern": "Undefined variable",
-    "explication": "Tu utilises une variable qui n'a jamais été définie dans ce scope.",
-    "conseil": "Vérifie que tu as bien assigné la variable avant de l'utiliser, ou qu'elle n'est pas dans un bloc conditionnel que tu crois toujours exécuté."
-  },
-  {
-    "id": "PHP-4",
-    "tech": "PHP",
-    "pattern": "Undefined index",
-    "explication": "Tu accèdes à une clé de tableau qui n'existe pas.",
-    "conseil": "Utilise `isset($array['clé'])` ou `$array['clé'] ?? null` pour éviter l'erreur."
-  },
-  {
-    "id": "PHP-5",
-    "tech": "PHP",
-    "pattern": "Parse error: syntax error",
-    "explication": "Erreur de syntaxe PHP — un caractère manquant ou mal placé empêche l'interprétation du fichier.",
-    "conseil": "Regarde la ligne indiquée : point-virgule oublié, accolade non fermée, virgule en trop dans un tableau."
-  },
-  {
-    "id": "PHP-6",
-    "tech": "PHP",
-    "pattern": "Maximum execution time",
-    "explication": "Ton script a dépassé le temps maximum d'exécution (souvent 30s). Tu as probablement une boucle infinie ou une requête trop lente.",
-    "conseil": "Cherche une boucle `while` ou `for` dont la condition ne devient jamais fausse, ou optimise ta requête SQL."
-  },
-  {
-    "id": "PHP-7",
-    "tech": "PHP",
-    "pattern": "Allowed memory size",
-    "explication": "PHP a manqué de mémoire. Tu charges probablement un fichier ou un tableau trop volumineux d'un coup.",
-    "conseil": "Traite les données par batch, ou augmente temporairement `memory_limit` dans php.ini."
-  },
-  {
-    "id": "PHP-8",
-    "tech": "PHP",
-    "pattern": "Class .+ not found",
-    "explication": "PHP ne trouve pas la classe demandée. L'autoload ne la trouve pas.",
-    "conseil": "Lance `composer dump-autoload`, vérifie le namespace et le nom du fichier (ils doivent correspondre exactement)."
-  },
-  {
-    "id": "PHP-9",
-    "tech": "PHP",
-    "pattern": "Cannot redeclare",
-    "explication": "Tu déclares une fonction ou classe qui existe déjà (souvent à cause d'un double `include`).",
-    "conseil": "Remplace `require` par `require_once` ou `include` par `include_once`."
-  },
-  {
-    "id": "PHP-10",
-    "tech": "PHP",
-    "pattern": "headers already sent",
-    "explication": "Du contenu HTML (ou même un espace) a été envoyé avant un `header()` ou `setcookie()`.",
-    "conseil": "Vérifie qu'il n'y a aucun espace/saut de ligne avant `<?php` dans tes fichiers, et qu'aucun `echo` ne précède le `header()`."
-  },
-  {
-    "id": "PHP-11",
-    "tech": "PHP",
-    "pattern": "Fatal error: Uncaught Error",
-    "explication": "Une erreur fatale non rattrapée a planté l'exécution du script PHP.",
-    "conseil": "Lis le détail après 'Uncaught Error:' — c'est l'erreur réelle. Active le mode debug pour voir la stack trace complète."
-  },
-  {
-    "id": "PHP-12",
-    "tech": "PHP",
-    "pattern": "Typed property .+ must not be accessed before initialization",
-    "explication": "Tu accèdes à une propriété typée PHP 8 avant qu'elle soit initialisée. Elle n'est pas null, elle est dans un état 'uninitialized'.",
-    "conseil": "Initialise la propriété dans le constructeur ou donne-lui une valeur par défaut. Si nullable : `public ?MonType $prop = null;`"
-  },
-  {
-    "id": "PHP-13",
-    "tech": "PHP",
-    "pattern": "Cannot use object of type .+ as array",
-    "explication": "Tu utilises la syntaxe `[]` sur un objet qui n'implémente pas ArrayAccess.",
-    "conseil": "Utilise les méthodes de l'objet à la place, ou vérifie que tu n'as pas confondu un objet et un tableau dans ta variable."
-  },
-  {
-    "id": "PHP-14",
-    "tech": "PHP",
-    "pattern": "Division by zero",
-    "explication": "Tu divises par zéro.",
-    "conseil": "Ajoute une vérification avant la division : `if ($diviseur != 0) { ... }`."
-  },
-  {
-    "id": "PHP-15",
-    "tech": "PHP",
-    "pattern": "Cannot modify header information",
-    "explication": "Tu essaies d'envoyer un header HTTP alors que du contenu a déjà été envoyé au navigateur.",
-    "conseil": "Même cause que 'headers already sent' — vérifie les espaces avant `<?php` et les `echo` avant les redirections."
-  },
-  {
-    "id": "PHP-16",
-    "tech": "PHP",
-    "pattern": "Undefined constant",
-    "explication": "Tu utilises une constante qui n'a pas été définie.",
-    "conseil": "Définis la constante avec `define('MA_CONSTANTE', valeur)` ou `const MA_CONSTANTE = valeur` dans une classe."
-  },
-  {
-    "id": "PHP-17",
-    "tech": "PHP",
-    "pattern": "Cannot access private property",
-    "explication": "Tu essaies d'accéder à une propriété privée depuis l'extérieur de la classe.",
-    "conseil": "Utilise un getter public, ou change la visibilité en `protected` ou `public` si c'est intentionnel."
-  },
-  {
-    "id": "PHP-18",
-    "tech": "PHP",
-    "pattern": "Interface .+ not found|Trait .+ not found",
-    "explication": "PHP ne trouve pas l'interface ou le trait utilisé.",
-    "conseil": "Vérifie le namespace et l'import (`use`). Lance `composer dump-autoload`."
-  },
-  {
-    "id": "PHP-19",
-    "tech": "PHP",
-    "pattern": "Array to string conversion",
-    "explication": "Tu essaies d'utiliser un tableau comme une chaîne de caractères (dans un `echo` ou une concaténation par exemple).",
-    "conseil": "Utilise `implode(',', $array)` ou `print_r($array)` pour afficher un tableau, ou accède à un élément spécifique : `$array[0]`."
-  },
-  {
-    "id": "PHP-20",
-    "tech": "PHP",
-    "pattern": "PDOException|could not find driver",
-    "explication": "PHP ne peut pas se connecter à la base de données — driver manquant ou identifiants incorrects.",
-    "conseil": "Vérifie que l'extension PDO est activée dans php.ini (`extension=pdo_mysql`). Vérifie aussi les identifiants de connexion."
-  },
-  {
-    "id": "PHP-21",
-    "tech": "PHP",
-    "pattern": "Invalid argument supplied for foreach",
-    "explication": "Tu utilises `foreach` sur une variable qui n'est pas un tableau ou un objet itérable.",
-    "conseil": "Vérifie que la variable est bien un tableau avant : `if (is_array($var)) { foreach... }`. Elle est peut-être null ou false."
-  }
+  {"id":"PHP-1","tech":"PHP","pattern":"Call to undefined function","explication":"Tu appelles une fonction qui n'existe pas. Vérifie l'orthographe, ou que l'extension PHP requise est bien activée.","conseil":"Regarde si tu as oublié un `use` ou un `require`, ou si la fonction vient d'une lib non installée."},
+  {"id":"PHP-2","tech":"PHP","pattern":"Call to a member function .+ on null","explication":"Tu essaies d'appeler une méthode sur une variable qui vaut `null`.","conseil":"Ajoute un `if ($objet !== null)` avant d'appeler la méthode, ou vérifie pourquoi ta requête retourne null."},
+  {"id":"PHP-3","tech":"PHP","pattern":"Undefined variable","explication":"Tu utilises une variable qui n'a jamais été définie dans ce scope.","conseil":"Vérifie que tu as bien assigné la variable avant de l'utiliser."},
+  {"id":"PHP-4","tech":"PHP","pattern":"Undefined index","explication":"Tu accèdes à une clé de tableau qui n'existe pas.","conseil":"Utilise `isset($array['clé'])` ou `$array['clé'] ?? null` pour éviter l'erreur."},
+  {"id":"PHP-5","tech":"PHP","pattern":"Parse error: syntax error","explication":"Erreur de syntaxe PHP — un caractère manquant ou mal placé empêche l'interprétation du fichier.","conseil":"Regarde la ligne indiquée : point-virgule oublié, accolade non fermée, virgule en trop dans un tableau."},
+  {"id":"PHP-6","tech":"PHP","pattern":"Maximum execution time","explication":"Ton script a dépassé le temps maximum d'exécution. Tu as probablement une boucle infinie ou une requête trop lente.","conseil":"Cherche une boucle `while` ou `for` dont la condition ne devient jamais fausse, ou optimise ta requête SQL."},
+  {"id":"PHP-7","tech":"PHP","pattern":"Allowed memory size","explication":"PHP a manqué de mémoire. Tu charges probablement un fichier ou un tableau trop volumineux d'un coup.","conseil":"Traite les données par batch, ou augmente temporairement `memory_limit` dans php.ini."},
+  {"id":"PHP-8","tech":"PHP","pattern":"Class .+ not found","explication":"PHP ne trouve pas la classe demandée. L'autoload ne la trouve pas.","conseil":"Lance `composer dump-autoload`, vérifie le namespace et le nom du fichier (ils doivent correspondre exactement)."},
+  {"id":"PHP-9","tech":"PHP","pattern":"Cannot redeclare","explication":"Tu déclares une fonction ou classe qui existe déjà (souvent à cause d'un double `include`).","conseil":"Remplace `require` par `require_once` ou `include` par `include_once`."},
+  {"id":"PHP-10","tech":"PHP","pattern":"headers already sent","explication":"Du contenu HTML a été envoyé avant un `header()` ou `setcookie()`.","conseil":"Vérifie qu'il n'y a aucun espace/saut de ligne avant `<?php` dans tes fichiers, et qu'aucun `echo` ne précède le `header()`."},
+  {"id":"PHP-11","tech":"PHP","pattern":"Fatal error: Uncaught Error","explication":"Une erreur fatale non rattrapée a planté l'exécution du script PHP.","conseil":"Lis le détail après 'Uncaught Error:' — c'est l'erreur réelle. Active le mode debug pour voir la stack trace complète."},
+  {"id":"PHP-12","tech":"PHP","pattern":"Typed property .+ must not be accessed before initialization","explication":"Tu accèdes à une propriété typée PHP 8 avant qu'elle soit initialisée.","conseil":"Initialise la propriété dans le constructeur ou donne-lui une valeur par défaut. Si nullable : `public ?MonType $prop = null;`"},
+  {"id":"PHP-13","tech":"PHP","pattern":"Cannot use object of type .+ as array","explication":"Tu utilises la syntaxe `[]` sur un objet qui n'implémente pas ArrayAccess.","conseil":"Utilise les méthodes de l'objet à la place, ou vérifie que tu n'as pas confondu un objet et un tableau."},
+  {"id":"PHP-14","tech":"PHP","pattern":"Division by zero","explication":"Tu divises par zéro.","conseil":"Ajoute une vérification avant la division : `if ($diviseur != 0) { ... }`."},
+  {"id":"PHP-15","tech":"PHP","pattern":"Cannot modify header information","explication":"Tu essaies d'envoyer un header HTTP alors que du contenu a déjà été envoyé au navigateur.","conseil":"Même cause que 'headers already sent' — vérifie les espaces avant `<?php` et les `echo` avant les redirections."},
+  {"id":"PHP-16","tech":"PHP","pattern":"Undefined constant","explication":"Tu utilises une constante qui n'a pas été définie.","conseil":"Définis la constante avec `define('MA_CONSTANTE', valeur)` ou `const MA_CONSTANTE = valeur` dans une classe."},
+  {"id":"PHP-17","tech":"PHP","pattern":"Cannot access private property","explication":"Tu essaies d'accéder à une propriété privée depuis l'extérieur de la classe.","conseil":"Utilise un getter public, ou change la visibilité en `protected` ou `public` si c'est intentionnel."},
+  {"id":"PHP-18","tech":"PHP","pattern":"Array to string conversion","explication":"Tu essaies d'utiliser un tableau comme une chaîne de caractères.","conseil":"Utilise `implode(',', $array)` ou accède à un élément spécifique : `$array[0]`."},
+  {"id":"PHP-19","tech":"PHP","pattern":"PDOException|could not find driver","explication":"PHP ne peut pas se connecter à la base de données — driver manquant ou identifiants incorrects.","conseil":"Vérifie que l'extension PDO est activée dans php.ini (`extension=pdo_mysql`). Vérifie aussi les identifiants de connexion."},
+  {"id":"PHP-20","tech":"PHP","pattern":"Invalid argument supplied for foreach","explication":"Tu utilises `foreach` sur une variable qui n'est pas un tableau ou un objet itérable.","conseil":"Vérifie que la variable est bien un tableau avant : `if (is_array($var)) { foreach... }`. Elle est peut-être null ou false."},
+  {"id":"PHP-21","tech":"PHP","pattern":"Interface .+ not found|Trait .+ not found","explication":"PHP ne trouve pas l'interface ou le trait utilisé.","conseil":"Vérifie le namespace et l'import (`use`). Lance `composer dump-autoload`."},
+  {"id":"PHP-22","tech":"PHP","pattern":"Return value .+ must be of type .+, .+ returned","explication":"Ta fonction déclare un type de retour mais retourne une valeur d'un type différent.","conseil":"Vérifie ce que retourne ta fonction dans tous les cas. Si elle peut retourner null, utilise un type nullable : `?string`."},
+  {"id":"PHP-23","tech":"PHP","pattern":"Deprecated: .+ is deprecated","explication":"Tu utilises une fonctionnalité PHP qui est dépréciée et sera supprimée dans une future version.","conseil":"Lis le message pour savoir quelle alternative utiliser. Ce n'est qu'un avertissement mais il faut migrer avant la prochaine version majeure."},
+  {"id":"PHP-24","tech":"PHP","pattern":"Cannot declare class .+ because the name is already in use","explication":"Deux classes portent le même nom dans le même namespace.","conseil":"Renomme l'une des classes ou utilise des namespaces différents. Vérifie aussi les includes multiples avec `require_once`."},
+  {"id":"PHP-25","tech":"PHP","pattern":"Call to undefined method","explication":"Tu appelles une méthode sur un objet qui n'existe pas dans cette classe.","conseil":"Vérifie l'orthographe de la méthode et la classe de l'objet avec `get_class($objet)`. Consulte la doc ou le code de la classe."},
+  {"id":"PHP-26","tech":"PHP","pattern":"Object of class .+ could not be converted to int|to string","explication":"Tu essaies d'utiliser un objet là où PHP attend un type scalaire (int, string).","conseil":"Accède à la propriété appropriée de l'objet plutôt qu'à l'objet lui-même. Ou implémente `__toString()` pour la conversion en string."},
+  {"id":"PHP-27","tech":"PHP","pattern":"preg_match|preg_replace.*Warning","explication":"Ta regex est invalide — erreur de syntaxe dans l'expression régulière.","conseil":"Vérifie la syntaxe de ta regex. Teste-la sur regex101.com. Assure-toi que les délimiteurs sont cohérents (ex: `/pattern/flags`)."},
+  {"id":"PHP-28","tech":"PHP","pattern":"file_get_contents.+failed to open stream","explication":"`file_get_contents()` ne peut pas ouvrir l'URL ou le fichier indiqué.","conseil":"Vérifie que l'URL est accessible. Pour les URLs distantes, vérifie que `allow_url_fopen = On` dans php.ini. Pour les fichiers, vérifie les permissions."},
+  {"id":"PHP-29","tech":"PHP","pattern":"json_decode returns null","explication":"`json_decode()` retourne null quand le JSON est invalide ou quand la chaîne est vide.","conseil":"Vérifie avec `json_last_error()` et `json_last_error_msg()` pour connaître la cause exacte. Logge la chaîne brute avant de la décoder."},
+  {"id":"PHP-30","tech":"PHP","pattern":"Trying to access array offset on value of type null","explication":"Tu accèdes à un index de tableau sur une variable qui vaut null.","conseil":"Vérifie que ta variable est bien un tableau avant d'y accéder : `if (isset($var) && is_array($var)) { ... }`."},
+  {"id":"PHP-31","tech":"PHP","pattern":"Cannot instantiate abstract class","explication":"Tu essaies de créer une instance d'une classe abstraite avec `new`.","conseil":"Instancie une classe concrète qui hérite de la classe abstraite, pas la classe abstraite elle-même."},
+  {"id":"PHP-32","tech":"PHP","pattern":"Cannot instantiate interface","explication":"Tu essaies de créer une instance d'une interface avec `new`.","conseil":"Instancie une classe qui implémente l'interface, pas l'interface elle-même."},
+  {"id":"PHP-33","tech":"PHP","pattern":"Trying to get property .+ of non-object","explication":"Tu accèdes à une propriété sur une variable qui n'est pas un objet (souvent null).","conseil":"Vérifie que ta variable est bien un objet avant d'accéder à ses propriétés : `if ($obj instanceof MaClasse) { ... }`."},
+  {"id":"PHP-34","tech":"PHP","pattern":"use of undefined constant","explication":"Tu utilises un nom qui ressemble à une constante mais qui n'est pas définie.","conseil":"Mets le nom entre guillemets si c'est une string, ou définis la constante avec `define()`. En PHP 8 ça génère une erreur fatale au lieu d'un simple warning."},
+  {"id":"PHP-35","tech":"PHP","pattern":"Cannot pass parameter .+ by reference","explication":"Tu passes une valeur littérale ou une expression là où une référence est attendue.","conseil":"Assigne d'abord la valeur à une variable, puis passe la variable par référence : `$var = 'valeur'; maFonction($var);`"},
+  {"id":"PHP-36","tech":"PHP","pattern":"Wrong parameter count|expects .+ parameters","explication":"Tu appelles une fonction avec le mauvais nombre d'arguments.","conseil":"Vérifie la signature de la fonction dans la doc PHP ou dans le code source. Compte les paramètres obligatoires."},
+  {"id":"PHP-37","tech":"PHP","pattern":"Undefined offset","explication":"Tu accèdes à un index numérique de tableau qui n'existe pas.","conseil":"Vérifie que l'index existe avant d'y accéder avec `isset($array[$index])` ou `array_key_exists($index, $array)`."},
+  {"id":"PHP-38","tech":"PHP","pattern":"String could not be parsed as XML","explication":"Tu essaies de parser une chaîne qui n'est pas du XML valide.","conseil":"Affiche la chaîne brute pour vérifier son contenu. Active la gestion des erreurs : `libxml_use_internal_errors(true)` puis `libxml_get_errors()`."},
+  {"id":"PHP-39","tech":"PHP","pattern":"session_start.*already started|Cannot start session","explication":"Tu appelles `session_start()` alors que la session est déjà démarrée.","conseil":"Vérifie avec `session_status() === PHP_SESSION_NONE` avant d'appeler `session_start()`. Ou utilise `session_start(['cookie_secure' => true])` qui ne lance pas d'erreur si déjà démarrée."},
+  {"id":"PHP-40","tech":"PHP","pattern":"chmod|mkdir.*Permission denied","explication":"PHP n'a pas les droits pour créer un dossier ou modifier les permissions d'un fichier.","conseil":"Vérifie les permissions du dossier parent. En production, le serveur web (www-data) doit avoir les droits d'écriture sur les dossiers d'upload."},
+  {"id":"PHP-41","tech":"PHP","pattern":"The zip extension is not loaded","explication":"L'extension PHP Zip n'est pas activée.","conseil":"Décommente `extension=zip` dans php.ini et redémarre le serveur web. Sur Ubuntu : `sudo apt install php-zip`."},
+  {"id":"PHP-42","tech":"PHP","pattern":"GD library|imagecreate.*not supported","explication":"L'extension PHP GD n'est pas installée ou activée, nécessaire pour le traitement d'images.","conseil":"Active l'extension GD dans php.ini : `extension=gd`. Sur Ubuntu : `sudo apt install php-gd`."},
+  {"id":"PHP-43","tech":"PHP","pattern":"cURL error","explication":"Une requête cURL a échoué — problème réseau, SSL, ou URL invalide.","conseil":"Vérifie le code d'erreur cURL avec `curl_error()`. Les erreurs courantes : 6 = DNS introuvable, 7 = connexion refusée, 60 = SSL invalide."},
+  {"id":"PHP-44","tech":"PHP","pattern":"mb_detect_encoding|mb_convert_encoding","explication":"Problème d'encodage de chaîne de caractères — souvent UTF-8 vs ISO-8859-1.","conseil":"Force l'encodage UTF-8 partout : `mb_internal_encoding('UTF-8')` en début de script. Vérifie aussi l'encodage de ta BDD et de ta connexion PDO."},
+  {"id":"PHP-45","tech":"PHP","pattern":"Nesting level too deep","explication":"La structure de données (tableau ou objet) est trop profondément imbriquée pour être traitée (souvent var_export ou json_encode).","conseil":"Évite les références circulaires dans tes tableaux/objets. Si c'est intentionnel, augmente la limite ou utilise un sérialiseur adapté."},
+  {"id":"PHP-46","tech":"PHP","pattern":"Cannot use .+ as .+ because the name is already in use","explication":"Conflit de nommage lors de l'utilisation d'un alias dans un `use`.","conseil":"Ajoute un alias : `use MonNamespace\\MaClasse as AutreNom;` pour éviter le conflit."},
+  {"id":"PHP-47","tech":"PHP","pattern":"Class .+ cannot implement .+ - it is not an interface","explication":"Tu essaies d'implémenter quelque chose qui est une classe abstraite et non une interface.","conseil":"Utilise `extends` pour hériter d'une classe abstraite, et `implements` uniquement pour les interfaces."},
+  {"id":"PHP-48","tech":"PHP","pattern":"Cannot override final method","explication":"Tu essaies de redéfinir une méthode déclarée `final` dans la classe parente.","conseil":"Les méthodes `final` ne peuvent pas être surchargées. Soit tu modifies la classe parente (si tu y as accès), soit tu revois ton architecture."},
+  {"id":"PHP-49","tech":"PHP","pattern":"Access level to .+ must be .+ (as in class","explication":"Tu essaies de réduire la visibilité d'une méthode héritée (ex: rendre `public` en `private`).","conseil":"En PHP, on ne peut qu'augmenter la visibilité en héritant (private → protected → public), jamais la réduire."},
+  {"id":"PHP-50","tech":"PHP","pattern":"Indirect modification of overloaded property","explication":"Tu essaies de modifier une propriété d'un objet qui utilise `__get()` et `__set()` magiques.","conseil":"Assigne d'abord la propriété à une variable temporaire, modifie-la, puis réassigne-la : `$temp = $obj->prop; $temp[] = 'val'; $obj->prop = $temp;`"}
 ]

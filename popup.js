@@ -5,7 +5,7 @@ const GITHUB_BASE = "https://raw.githubusercontent.com/Lavalloir/ErrorExplainer/
 const ERROR_FILES = [
   "php", "symfony", "laravel", "react", "javascript", "typescript",
   "nodejs", "mysql", "doctrine", "csharp", "axios", "docker",
-  "git", "composer", "vite", "npm", "http", "css"
+  "git", "composerphp", "vite", "npm", "http", "css"
 ];
 
 const TECH_TO_FILE = {
@@ -13,40 +13,45 @@ const TECH_TO_FILE = {
   "React": "react", "JavaScript": "javascript", "TypeScript": "typescript",
   "Node.js": "nodejs", "MySQL": "mysql", "Doctrine": "doctrine",
   "C#": "csharp", "Axios": "axios", "Docker": "docker",
-  "Git": "git", "Composer": "composer", "Vite": "vite",
+  "Git": "git", "Composer": "composerphp", "Vite": "vite",
   "npm": "npm", "HTTP": "http", "CSS": "css"
 };
 
-async function loadAllDB() {
-  if (errorsDB.length > 0) return;
+async function fetchJSON(url, fallbackUrl) {
   try {
-    const all = await Promise.all(
-      ERROR_FILES.map(name =>
-        fetch(`${GITHUB_BASE}/${name}.json`).then(r => r.json())
-      )
-    );
-    errorsDB = all.flat();
+    const res = await fetch(url);
+    return await res.json();
   } catch {
-    // Fallback : fichiers locaux si GitHub inaccessible
-    const all = await Promise.all(
-      ERROR_FILES.map(name =>
-        fetch(chrome.runtime.getURL(`errors/${name}.json`)).then(r => r.json())
-      )
-    );
-    errorsDB = all.flat();
+    const res = await fetch(fallbackUrl);
+    return await res.json();
   }
 }
 
-async function loadTechDB(tech) {
-  const file = TECH_TO_FILE[tech];
-  if (!file) return await loadAllDB();
-  try {
-    const res = await fetch(`${GITHUB_BASE}/${file}.json`);
-    errorsDB = await res.json();
-  } catch {
-    const res = await fetch(chrome.runtime.getURL(`errors/${file}.json`));
-    errorsDB = await res.json();
-  }
+async function loadAllDB() {
+  if (errorsDB.length > 0) return;
+  const all = await Promise.all(
+    ERROR_FILES.map(name => fetchJSON(
+      `${GITHUB_BASE}/${name}.json`,
+      chrome.runtime.getURL(`errors/${name}.json`)
+    ))
+  );
+  errorsDB = all.flat();
+}
+
+async function loadTechDB(file) {
+  errorsDB = await fetchJSON(
+    `${GITHUB_BASE}/${file}.json`,
+    chrome.runtime.getURL(`errors/${file}.json`)
+  );
+}
+
+function getSelectedTech() {
+  return document.getElementById("techSelect").value;
+}
+
+function setSelectedTech(techName) {
+  const file = TECH_TO_FILE[techName];
+  if (file) document.getElementById("techSelect").value = file;
 }
 
 function techToBadgeClass(tech) {
@@ -95,8 +100,7 @@ function renderResults(matches) {
       <div class="no-match">
         <strong>❌ Aucune correspondance trouvée</strong>
         Cette erreur n'est pas encore dans la base.<br>
-        Copie le message clé (sans les chemins de fichiers) et réessaie,
-        ou ajoute-la dans le fichier JSON de la tech concernée.
+        Essaie sans filtre de tech, ou ajoute-la dans le JSON correspondant.
       </div>`;
     return;
   }
@@ -127,13 +131,25 @@ async function analyze() {
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span>Analyse…';
 
-  if (errorsDB.length === 0) await loadAllDB();
+  const selectedFile = getSelectedTech();
+
+  // Charge uniquement la tech sélectionnée ou tout si vide
+  if (selectedFile) {
+    await loadTechDB(selectedFile);
+  } else {
+    await loadAllDB();
+  }
 
   renderResults(findMatches(input));
 
   btn.disabled = false;
   btn.textContent = "Analyser";
 }
+
+// Reset errorsDB quand on change de tech pour forcer le rechargement
+document.getElementById("techSelect").addEventListener("change", () => {
+  errorsDB = [];
+});
 
 document.getElementById("btnAnalyze").addEventListener("click", analyze);
 
@@ -144,6 +160,8 @@ document.getElementById("btnClear").addEventListener("click", () => {
       <span>🛠️</span>
       Colle une erreur et clique sur Analyser
     </div>`;
+  document.getElementById("techSelect").value = "";
+  document.getElementById("autoDetectedBanner").classList.remove("visible");
   errorsDB = [];
 });
 
@@ -151,10 +169,17 @@ document.getElementById("errorInput").addEventListener("keydown", (e) => {
   if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) analyze();
 });
 
+function showAutoDetectedBanner(tech) {
+  const banner = document.getElementById("autoDetectedBanner");
+  document.getElementById("autoDetectedLabel").textContent = `⚡ Page ${tech} détectée automatiquement`;
+  banner.classList.add("visible");
+}
+
 async function init() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   const session = await chrome.storage.session.get("pendingError");
 
+  // Priorité 1 : clic droit
   if (session.pendingError) {
     document.getElementById("errorInput").value = session.pendingError;
     chrome.storage.session.remove("pendingError");
@@ -165,8 +190,10 @@ async function init() {
 
   if (!tab?.id) return;
 
+  // Priorité 2 : scan automatique de la page
   chrome.tabs.sendMessage(tab.id, { action: "scanPage" }, async (res) => {
     if (chrome.runtime.lastError || !res) {
+      // Priorité 3 : texte sélectionné
       chrome.tabs.sendMessage(tab.id, { action: "getSelection" }, async (sel) => {
         if (chrome.runtime.lastError || !sel?.text) return;
         document.getElementById("errorInput").value = sel.text;
@@ -176,8 +203,11 @@ async function init() {
       return;
     }
 
+    // Page d'erreur détectée → pré-sélectionne la tech + banner
     document.getElementById("errorInput").value = res.message;
-    await loadTechDB(res.tech);
+    setSelectedTech(res.tech);
+    showAutoDetectedBanner(res.tech);
+    await loadTechDB(TECH_TO_FILE[res.tech]);
     renderResults(findMatches(res.message));
   });
 }

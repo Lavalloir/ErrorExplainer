@@ -1,135 +1,52 @@
 [
-  {
-    "id": "LAR-1",
-    "tech": "Laravel",
-    "pattern": "Target class .+ does not exist",
-    "explication": "Laravel essaie de résoudre une classe via le conteneur IoC mais ne la trouve pas.",
-    "conseil": "Vérifie que la classe est bien importée, que le provider est enregistré dans `config/app.php`, et lance `php artisan config:clear`."
-  },
-  {
-    "id": "LAR-2",
-    "tech": "Laravel",
-    "pattern": "CSRF token mismatch",
-    "explication": "Le token de sécurité du formulaire est absent ou invalide.",
-    "conseil": "Ajoute `@csrf` dans ton formulaire Blade, ou ajoute la route dans `VerifyCsrfToken::$except` si c'est une API."
-  },
-  {
-    "id": "LAR-3",
-    "tech": "Laravel",
-    "pattern": "Route .+ not defined",
-    "explication": "Tu utilises `route('nom')` mais aucune route n'a ce nom.",
-    "conseil": "Lance `php artisan route:list` pour voir les noms disponibles. Vérifie `->name('...')` dans tes routes."
-  },
-  {
-    "id": "LAR-4",
-    "tech": "Laravel",
-    "pattern": "Column not found|Unknown column",
-    "explication": "Tu essaies d'accéder à une colonne qui n'existe pas dans la table.",
-    "conseil": "Lance tes migrations avec `php artisan migrate`. Vérifie que le nom de colonne dans ton code correspond exactement à la BDD."
-  },
-  {
-    "id": "LAR-5",
-    "tech": "Laravel",
-    "pattern": "No query results for model",
-    "explication": "`findOrFail()` n'a rien trouvé et a lancé une exception 404.",
-    "conseil": "Utilise `find()` si tu veux gérer le cas null toi-même, ou vérifie que l'ID existe bien en BDD."
-  },
-  {
-    "id": "LAR-6",
-    "tech": "Laravel",
-    "pattern": "Mass assignment",
-    "explication": "Tu essaies d'assigner en masse des champs non autorisés sur un modèle Eloquent.",
-    "conseil": "Ajoute les champs dans `$fillable` du modèle, ou utilise `$guarded = []` pour tout autoriser (attention en prod)."
-  },
-  {
-    "id": "LAR-7",
-    "tech": "Laravel",
-    "pattern": "Relationship .+ does not exist",
-    "explication": "Tu appelles une relation Eloquent qui n'est pas définie sur le modèle.",
-    "conseil": "Ajoute la méthode de relation manquante dans le modèle (`hasMany`, `belongsTo`, etc.)."
-  },
-  {
-    "id": "LAR-8",
-    "tech": "Laravel",
-    "pattern": "View .+ not found",
-    "explication": "Laravel ne trouve pas le fichier de vue Blade demandé.",
-    "conseil": "Vérifie le chemin : `view('dossier.fichier')` correspond à `resources/views/dossier/fichier.blade.php`."
-  },
-  {
-    "id": "LAR-9",
-    "tech": "Laravel",
-    "pattern": "Integrity constraint violation",
-    "explication": "Une contrainte de base de données est violée (clé étrangère, unicité, not null).",
-    "conseil": "Vérifie que l'enregistrement parent existe avant d'insérer l'enfant, ou que tu ne crées pas un doublon sur un champ unique."
-  },
-  {
-    "id": "LAR-10",
-    "tech": "Laravel",
-    "pattern": "TokenMismatchException",
-    "explication": "Même chose que CSRF token mismatch — le token de session a expiré ou est absent.",
-    "conseil": "Ajoute `@csrf` dans le formulaire. Si l'utilisateur est resté longtemps sur la page, la session a expiré."
-  },
-  {
-    "id": "LAR-11",
-    "tech": "Laravel",
-    "pattern": "contains .+ abstract method",
-    "explication": "Tu instancies une classe abstraite ou tu n'as pas implémenté toutes les méthodes d'une interface.",
-    "conseil": "Implémente toutes les méthodes abstraites requises dans ta classe concrète."
-  },
-  {
-    "id": "LAR-12",
-    "tech": "Laravel",
-    "pattern": "syntax error",
-    "explication": "Ton fichier PHP contient une erreur de syntaxe qui empêche Laravel de démarrer.",
-    "conseil": "Lance `php -l fichier.php` pour identifier le fichier et la ligne exacte de l'erreur."
-  },
-  {
-    "id": "LAR-13",
-    "tech": "Laravel",
-    "pattern": "Call to undefined method .+::query",
-    "explication": "Tu appelles `query()` sur une classe qui n'est pas un modèle Eloquent ou qui n'hérite pas de Model.",
-    "conseil": "Vérifie que ta classe hérite bien de `Illuminate\\Database\\Eloquent\\Model`."
-  },
-  {
-    "id": "LAR-14",
-    "tech": "Laravel",
-    "pattern": "Trying to get property .+ of non-object",
-    "explication": "Tu accèdes à une propriété d'une variable qui n'est pas un objet (souvent null retourné par une requête).",
-    "conseil": "Vérifie que ta requête retourne bien un objet avant d'accéder à ses propriétés. Utilise `optional($objet)->propriete` pour éviter l'erreur."
-  },
-  {
-    "id": "LAR-15",
-    "tech": "Laravel",
-    "pattern": "Class .+ is not a valid event",
-    "explication": "L'événement que tu dispatches n'est pas correctement défini.",
-    "conseil": "Vérifie que la classe d'événement existe et implémente bien l'interface ou hérite de la bonne classe de base."
-  },
-  {
-    "id": "LAR-16",
-    "tech": "Laravel",
-    "pattern": "App\\Models\\.+ not found|model .+ could not be found",
-    "explication": "Laravel ne trouve pas le modèle Eloquent demandé.",
-    "conseil": "Vérifie que le fichier du modèle existe dans `app/Models/` et que le namespace est correct."
-  },
-  {
-    "id": "LAR-17",
-    "tech": "Laravel",
-    "pattern": "Mix manifest not found",
-    "explication": "Le fichier `public/mix-manifest.json` n'existe pas — Laravel Mix n'a pas été compilé.",
-    "conseil": "Lance `npm run dev` ou `npm run build` pour compiler les assets. Vérifie que tu as bien lancé `npm install` avant."
-  },
-  {
-    "id": "LAR-18",
-    "tech": "Laravel",
-    "pattern": "Connection refused|SQLSTATE\\[HY000\\] \\[2002\\]",
-    "explication": "Laravel ne peut pas se connecter à la base de données — le serveur MySQL n'est pas démarré ou les identifiants sont incorrects.",
-    "conseil": "Vérifie que MySQL tourne. Contrôle les paramètres dans ton `.env` : `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`."
-  },
-  {
-    "id": "LAR-19",
-    "tech": "Laravel",
-    "pattern": "Illuminate\\\\Database\\\\QueryException",
-    "explication": "Une erreur SQL s'est produite lors de l'exécution d'une requête Eloquent ou Query Builder.",
-    "conseil": "Lis le message SQL dans l'exception pour identifier la cause exacte. Souvent une colonne manquante, un type incompatible ou une contrainte violée."
-  }
+  {"id":"LAR-1","tech":"Laravel","pattern":"Target class .+ does not exist","explication":"Laravel essaie de résoudre une classe via le conteneur IoC mais ne la trouve pas.","conseil":"Vérifie que la classe est bien importée, que le provider est enregistré dans `config/app.php`, et lance `php artisan config:clear`."},
+  {"id":"LAR-2","tech":"Laravel","pattern":"CSRF token mismatch","explication":"Le token de sécurité du formulaire est absent ou invalide.","conseil":"Ajoute `@csrf` dans ton formulaire Blade, ou ajoute la route dans `VerifyCsrfToken::$except` si c'est une API."},
+  {"id":"LAR-3","tech":"Laravel","pattern":"Route .+ not defined","explication":"Tu utilises `route('nom')` mais aucune route n'a ce nom.","conseil":"Lance `php artisan route:list` pour voir les noms disponibles. Vérifie `->name('...')` dans tes routes."},
+  {"id":"LAR-4","tech":"Laravel","pattern":"Column not found|Unknown column","explication":"Tu essaies d'accéder à une colonne qui n'existe pas dans la table.","conseil":"Lance tes migrations avec `php artisan migrate`. Vérifie que le nom de colonne dans ton code correspond exactement à la BDD."},
+  {"id":"LAR-5","tech":"Laravel","pattern":"No query results for model","explication":"`findOrFail()` n'a rien trouvé et a lancé une exception 404.","conseil":"Utilise `find()` si tu veux gérer le cas null toi-même, ou vérifie que l'ID existe bien en BDD."},
+  {"id":"LAR-6","tech":"Laravel","pattern":"Mass assignment","explication":"Tu essaies d'assigner en masse des champs non autorisés sur un modèle Eloquent.","conseil":"Ajoute les champs dans `$fillable` du modèle, ou utilise `$guarded = []` pour tout autoriser (attention en prod)."},
+  {"id":"LAR-7","tech":"Laravel","pattern":"Relationship .+ does not exist","explication":"Tu appelles une relation Eloquent qui n'est pas définie sur le modèle.","conseil":"Ajoute la méthode de relation manquante dans le modèle (`hasMany`, `belongsTo`, etc.)."},
+  {"id":"LAR-8","tech":"Laravel","pattern":"View .+ not found","explication":"Laravel ne trouve pas le fichier de vue Blade demandé.","conseil":"Vérifie le chemin : `view('dossier.fichier')` correspond à `resources/views/dossier/fichier.blade.php`."},
+  {"id":"LAR-9","tech":"Laravel","pattern":"Integrity constraint violation","explication":"Une contrainte de base de données est violée (clé étrangère, unicité, not null).","conseil":"Vérifie que l'enregistrement parent existe avant d'insérer l'enfant, ou que tu ne crées pas un doublon sur un champ unique."},
+  {"id":"LAR-10","tech":"Laravel","pattern":"TokenMismatchException","explication":"Même chose que CSRF token mismatch — le token de session a expiré ou est absent.","conseil":"Ajoute `@csrf` dans le formulaire. Si l'utilisateur est resté longtemps sur la page, la session a expiré."},
+  {"id":"LAR-11","tech":"Laravel","pattern":"contains .+ abstract method","explication":"Tu instancies une classe abstraite ou tu n'as pas implémenté toutes les méthodes d'une interface.","conseil":"Implémente toutes les méthodes abstraites requises dans ta classe concrète."},
+  {"id":"LAR-12","tech":"Laravel","pattern":"syntax error","explication":"Ton fichier PHP contient une erreur de syntaxe qui empêche Laravel de démarrer.","conseil":"Lance `php -l fichier.php` pour identifier le fichier et la ligne exacte de l'erreur."},
+  {"id":"LAR-13","tech":"Laravel","pattern":"Call to undefined method .+::query","explication":"Tu appelles `query()` sur une classe qui n'est pas un modèle Eloquent.","conseil":"Vérifie que ta classe hérite bien de `Illuminate\\Database\\Eloquent\\Model`."},
+  {"id":"LAR-14","tech":"Laravel","pattern":"Trying to get property .+ of non-object","explication":"Tu accèdes à une propriété d'une variable qui n'est pas un objet (souvent null).","conseil":"Vérifie que ta requête retourne bien un objet avant d'accéder à ses propriétés. Utilise `optional($objet)->propriete`."},
+  {"id":"LAR-15","tech":"Laravel","pattern":"Mix manifest not found","explication":"Le fichier `public/mix-manifest.json` n'existe pas — Laravel Mix n'a pas été compilé.","conseil":"Lance `npm run dev` ou `npm run build`. Vérifie que tu as bien lancé `npm install` avant."},
+  {"id":"LAR-16","tech":"Laravel","pattern":"Connection refused|SQLSTATE\\[HY000\\] \\[2002\\]","explication":"Laravel ne peut pas se connecter à la base de données.","conseil":"Vérifie que MySQL tourne. Contrôle les paramètres dans ton `.env` : `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`."},
+  {"id":"LAR-17","tech":"Laravel","pattern":"Illuminate\\\\Database\\\\QueryException","explication":"Une erreur SQL s'est produite lors de l'exécution d'une requête Eloquent.","conseil":"Lis le message SQL dans l'exception pour identifier la cause exacte. Souvent une colonne manquante, un type incompatible ou une contrainte violée."},
+  {"id":"LAR-18","tech":"Laravel","pattern":"Class .+ is not a valid event","explication":"L'événement que tu dispatches n'est pas correctement défini.","conseil":"Vérifie que la classe d'événement existe et est bien dans le bon namespace."},
+  {"id":"LAR-19","tech":"Laravel","pattern":"Model .+ could not be found","explication":"Laravel ne trouve pas le modèle Eloquent demandé.","conseil":"Vérifie que le fichier du modèle existe dans `app/Models/` et que le namespace est correct."},
+  {"id":"LAR-20","tech":"Laravel","pattern":"php artisan key:generate|APP_KEY","explication":"La clé d'application Laravel n'est pas définie.","conseil":"Lance `php artisan key:generate` pour générer une clé et l'écrire dans le `.env`. Ne commite jamais ton `.env` sur Git."},
+  {"id":"LAR-21","tech":"Laravel","pattern":"Vite manifest not found","explication":"Le manifest Vite n'a pas été généré — les assets ne sont pas compilés.","conseil":"Lance `npm run dev` pour le développement ou `npm run build` pour la production. Vérifie que `vite.config.js` est bien configuré."},
+  {"id":"LAR-22","tech":"Laravel","pattern":"The .+ field is required","explication":"Un champ obligatoire est absent de la requête lors de la validation.","conseil":"Vérifie les règles de validation dans ton FormRequest ou `$request->validate()`. Le champ doit être présent et non vide dans la requête."},
+  {"id":"LAR-23","tech":"Laravel","pattern":"The .+ must be a string|must be an integer|must be a number","explication":"Une règle de validation de type échoue — le champ reçoit un type inattendu.","conseil":"Vérifie le type des données envoyées depuis le formulaire. Les champs HTML envoient toujours des strings, pense à caster si nécessaire."},
+  {"id":"LAR-24","tech":"Laravel","pattern":"The .+ has already been taken","explication":"La valeur soumise existe déjà en base de données — règle `unique` violée.","conseil":"C'est une erreur de validation normale. Affiche le message à l'utilisateur. Si tu veux ignorer l'entrée courante lors d'un update : `unique:table,column,{id}`."},
+  {"id":"LAR-25","tech":"Laravel","pattern":"Specified key was too long","explication":"MySQL ne peut pas créer l'index car la clé dépasse 767 bytes (problème de charset/longueur).","conseil":"Dans `AppServiceProvider::boot()`, ajoute `Schema::defaultStringLength(191)`. Ou utilise MySQL 5.7.7+ avec `utf8mb4`."},
+  {"id":"LAR-26","tech":"Laravel","pattern":"Route .+ not found","explication":"La route demandée n'existe pas dans ton application.","conseil":"Lance `php artisan route:list` pour lister toutes les routes. Vérifie l'URL et la méthode HTTP."},
+  {"id":"LAR-27","tech":"Laravel","pattern":"Unauthenticated","explication":"L'utilisateur n'est pas connecté et tente d'accéder à une route protégée par le middleware `auth`.","conseil":"Redirige vers la page de login ou vérifie que tu envoies bien le token Bearer dans les headers pour les APIs."},
+  {"id":"LAR-28","tech":"Laravel","pattern":"This action is unauthorized","explication":"L'utilisateur est connecté mais n'a pas les droits pour cette action (Policy).","conseil":"Vérifie la Policy associée au modèle. Lance `php artisan make:policy` si elle n'existe pas encore."},
+  {"id":"LAR-29","tech":"Laravel","pattern":"Too Many Requests","explication":"Le rate limiting a bloqué la requête — trop de tentatives en peu de temps.","conseil":"Le middleware `throttle` limite les requêtes. En dev, tu peux ajuster les limites dans `RouteServiceProvider` ou utiliser `withoutMiddleware`."},
+  {"id":"LAR-30","tech":"Laravel","pattern":"Class .+ must return a relationship instance","explication":"Une méthode de relation Eloquent ne retourne pas une instance de relation.","conseil":"Assure-toi que ta méthode retourne bien `$this->hasMany(...)`, `$this->belongsTo(...)`, etc. sans `->get()` à la fin."},
+  {"id":"LAR-31","tech":"Laravel","pattern":"SQLSTATE\\[42000\\].*syntax error","explication":"Erreur de syntaxe SQL dans une requête générée par Eloquent ou Query Builder.","conseil":"Active le logging des requêtes avec `DB::listen()` pour voir la requête SQL exacte. Vérifie tes noms de colonnes et de tables."},
+  {"id":"LAR-32","tech":"Laravel","pattern":"Class .+ not found in .+","explication":"Une classe référencée dans un fichier de config ou un provider n'existe pas.","conseil":"Lance `composer dump-autoload`. Vérifie que la classe existe et que son namespace est correct."},
+  {"id":"LAR-33","tech":"Laravel","pattern":"Method .+::boot does not exist","explication":"Tu appelles `boot()` sur un modèle ou une classe qui ne l'implémente pas.","conseil":"Si tu utilises des traits Eloquent (SoftDeletes, etc.), assure-toi de les importer correctement avec `use`."},
+  {"id":"LAR-34","tech":"Laravel","pattern":"php artisan migrate.*error|Migration .+ not found","explication":"Une migration est introuvable ou contient une erreur.","conseil":"Vérifie que le fichier de migration existe dans `database/migrations/`. Lance `php artisan migrate:status` pour voir l'état."},
+  {"id":"LAR-35","tech":"Laravel","pattern":"Argument .+ passed to Illuminate","explication":"Tu passes un argument du mauvais type à une méthode du framework Laravel.","conseil":"Lis le message pour identifier quel argument est incorrect. Vérifie les types attendus dans la doc Laravel."},
+  {"id":"LAR-36","tech":"Laravel","pattern":"Call to .+ on null|Null given","explication":"Tu appelles une méthode sur une relation Eloquent qui retourne null.","conseil":"Vérifie que la relation existe avant d'appeler la méthode : `if ($model->relation) { ... }` ou utilise `optional()`."},
+  {"id":"LAR-37","tech":"Laravel","pattern":"ErrorException: .+ Undefined variable","explication":"Tu utilises une variable non définie dans une vue Blade.","conseil":"Passe la variable depuis le contrôleur : `return view('ma-vue', ['mavariable' => $valeur])`. Ou utilise `$mavariable ?? 'defaut'` dans la vue."},
+  {"id":"LAR-38","tech":"Laravel","pattern":"The payload is invalid|decrypt","explication":"Laravel ne peut pas déchiffrer un cookie ou une donnée chiffrée — souvent après un changement d'`APP_KEY`.","conseil":"Si tu as régénéré l'`APP_KEY`, les sessions existantes sont invalides. Les utilisateurs doivent se reconnecter. Vide les cookies."},
+  {"id":"LAR-39","tech":"Laravel","pattern":"Unable to prepare route .+ for serialization","explication":"Une route closure ne peut pas être mise en cache car les closures ne sont pas sérialisables.","conseil":"Remplace les closures dans `routes/web.php` par des contrôleurs : `Route::get('/', [HomeController::class, 'index'])`. Ensuite `php artisan route:cache` fonctionnera."},
+  {"id":"LAR-40","tech":"Laravel","pattern":"No application encryption key has been specified","explication":"La variable `APP_KEY` n'est pas définie dans le `.env`.","conseil":"Lance `php artisan key:generate`. Si tu clones un projet, copie `.env.example` en `.env` et génère une clé."},
+  {"id":"LAR-41","tech":"Laravel","pattern":"Method .+ does not exist on this collection","explication":"Tu appelles une méthode Eloquent sur une Collection alors qu'elle n'est disponible que sur le Query Builder.","conseil":"Si tu as déjà récupéré les données avec `->get()`, utilise les méthodes de Collection. Sinon, appelle la méthode avant `->get()` sur le Builder."},
+  {"id":"LAR-42","tech":"Laravel","pattern":"Livewire","explication":"Erreur liée à Livewire — problème de composant, de propriété ou de rendu.","conseil":"Vérifie que la classe Livewire est dans `app/Http/Livewire/` ou `app/Livewire/`. Lance `php artisan livewire:discover` pour recharger les composants."},
+  {"id":"LAR-43","tech":"Laravel","pattern":"419 Page Expired","explication":"La page a expiré — le token CSRF a expiré ou est absent.","conseil":"Ajoute `@csrf` dans le formulaire. Si l'erreur persiste, vérifie la config de session dans `config/session.php`."},
+  {"id":"LAR-44","tech":"Laravel","pattern":"The .+ field must be at least .+ characters","explication":"Un champ ne respecte pas la longueur minimale définie dans les règles de validation.","conseil":"Informe l'utilisateur de la longueur minimale. La règle est `min:X` dans ta validation."},
+  {"id":"LAR-45","tech":"Laravel","pattern":"Trying to access offset","explication":"Tu accèdes à un index qui n'existe pas sur un tableau ou une collection.","conseil":"Vérifie que l'index existe avec `isset()` ou utilise `->get(index, 'defaut')` sur les collections Eloquent."},
+  {"id":"LAR-46","tech":"Laravel","pattern":"Cannot bind value .+ to named parameter","explication":"Tu passes une valeur incorrecte à un paramètre nommé dans une requête SQL brute.","conseil":"Vérifie la correspondance entre les paramètres `:nom` dans ta requête et les valeurs passées dans le tableau de bindings."},
+  {"id":"LAR-47","tech":"Laravel","pattern":"Class .+ contains .+ abstract","explication":"Tu n'as pas implémenté toutes les méthodes abstraites requises par une classe parente ou une interface.","conseil":"Implémente toutes les méthodes abstraites dans ta classe concrète. L'erreur liste les méthodes manquantes."},
+  {"id":"LAR-48","tech":"Laravel","pattern":"Serialization of 'Closure' is not allowed","explication":"Tu essaies de mettre en cache ou sérialiser une closure.","conseil":"Remplace les closures dans tes routes par des contrôleurs. Dans les events/jobs, utilise des classes plutôt que des closures."},
+  {"id":"LAR-49","tech":"Laravel","pattern":"Job .+ not found|Queue","explication":"Un job ou un worker de queue a rencontré une erreur.","conseil":"Vérifie les logs dans `storage/logs/`. Assure-toi que le worker tourne : `php artisan queue:work`. Vérifie la config de queue dans `.env`."},
+  {"id":"LAR-50","tech":"Laravel","pattern":"Storage disk .+ not configured","explication":"Le disque de stockage demandé n'est pas configuré dans `config/filesystems.php`.","conseil":"Ajoute le disque dans `config/filesystems.php` ou utilise un disque existant (`local`, `public`, `s3`)."}
 ]

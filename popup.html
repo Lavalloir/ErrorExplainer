@@ -3,266 +3,75 @@
 <head>
   <meta charset="UTF-8" />
   <title>Error Explainer</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      width: 420px;
-      min-height: 200px;
-      background: #0f1117;
-      color: #e2e8f0;
-      font-size: 14px;
-    }
-
-    .header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 16px;
-      border-bottom: 1px solid #1e2533;
-      background: #0a0d14;
-    }
-
-    .header h1 {
-      font-size: 14px;
-      font-weight: 600;
-      color: #f1f5f9;
-      letter-spacing: 0.01em;
-    }
-
-    .header p {
-      font-size: 11px;
-      color: #64748b;
-      margin-top: 1px;
-    }
-
-    .input-area {
-      padding: 12px 16px;
-      border-bottom: 1px solid #1e2533;
-    }
-
-    textarea {
-      width: 100%;
-      background: #1a1f2e;
-      border: 1px solid #2d3748;
-      border-radius: 8px;
-      color: #e2e8f0;
-      font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
-      font-size: 12px;
-      line-height: 1.6;
-      padding: 10px 12px;
-      resize: vertical;
-      min-height: 90px;
-      outline: none;
-      transition: border-color 0.15s;
-    }
-
-    textarea:focus {
-      border-color: #3b5bdb;
-    }
-
-    textarea::placeholder {
-      color: #4a5568;
-    }
-
-    .actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .btn-primary {
-      flex: 1;
-      background: #3b5bdb;
-      color: #fff;
-      border: none;
-      border-radius: 7px;
-      padding: 9px 16px;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-
-    .btn-primary:hover { background: #4c6ef5; }
-    .btn-primary:disabled { background: #2d3748; color: #4a5568; cursor: not-allowed; }
-
-    .btn-secondary {
-      background: #1a1f2e;
-      color: #94a3b8;
-      border: 1px solid #2d3748;
-      border-radius: 7px;
-      padding: 9px 12px;
-      font-size: 12px;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .btn-secondary:hover {
-      border-color: #4a5568;
-      color: #e2e8f0;
-    }
-
-    .result-area {
-      padding: 14px 16px;
-    }
-
-    .result-empty {
-      text-align: center;
-      color: #4a5568;
-      padding: 24px 16px;
-      font-size: 13px;
-    }
-
-    .result-empty span {
-      display: block;
-      font-size: 28px;
-      margin-bottom: 8px;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 5px;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      margin-bottom: 10px;
-    }
-
-    .badge-symfony  { background: #1a2a1a; color: #4ade80; border: 1px solid #166534; }
-    .badge-laravel  { background: #2a1a1a; color: #fb923c; border: 1px solid #9a3412; }
-    .badge-react    { background: #0d1a2a; color: #38bdf8; border: 1px solid #0369a1; }
-    .badge-js       { background: #2a2410; color: #facc15; border: 1px solid #854d0e; }
-    .badge-php      { background: #1a1a2a; color: #a78bfa; border: 1px solid #4c1d95; }
-    .badge-node     { background: #0f2a1a; color: #4ade80; border: 1px solid #166534; }
-    .badge-mysql    { background: #1a2010; color: #86efac; border: 1px solid #14532d; }
-    .badge-typescript { background: #0d1a2a; color: #60a5fa; border: 1px solid #1e40af; }
-    .badge-http     { background: #2a1a10; color: #fdba74; border: 1px solid #9a3412; }
-    .badge-doctrine { background: #1a1020; color: #c084fc; border: 1px solid #581c87; }
-    .badge-git      { background: #2a1010; color: #f87171; border: 1px solid #991b1b; }
-    .badge-composer { background: #1a1a10; color: #d4d4a0; border: 1px solid #713f12; }
-    .badge-vite     { background: #1a0d2a; color: #c084fc; border: 1px solid #6b21a8; }
-    .badge-css      { background: #0d1a1a; color: #5eead4; border: 1px solid #0f766e; }
-    .badge-npm      { background: #2a100d; color: #fca5a5; border: 1px solid #991b1b; }
-    .badge-csharp   { background: #0d1a10; color: #6ee7b7; border: 1px solid #065f46; }
-    .badge-axios    { background: #0d1020; color: #818cf8; border: 1px solid #3730a3; }
-    .badge-docker   { background: #0d1a2a; color: #7dd3fc; border: 1px solid #075985; }
-    .badge-default  { background: #1a1f2e; color: #94a3b8; border: 1px solid #2d3748; }
-
-    .result-card {
-      background: #1a1f2e;
-      border: 1px solid #2d3748;
-      border-radius: 10px;
-      padding: 14px;
-    }
-
-    .result-explication {
-      color: #e2e8f0;
-      line-height: 1.65;
-      margin-bottom: 12px;
-      font-size: 13.5px;
-    }
-
-    .conseil-block {
-      background: #0f1a0f;
-      border: 1px solid #166534;
-      border-radius: 7px;
-      padding: 10px 12px;
-    }
-
-    .conseil-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: #4ade80;
-      letter-spacing: 0.06em;
-      margin-bottom: 5px;
-    }
-
-    .conseil-text {
-      color: #86efac;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    code {
-      background: #0a0d14;
-      padding: 1px 5px;
-      border-radius: 4px;
-      font-family: monospace;
-      font-size: 12px;
-      color: #93c5fd;
-    }
-
-    .no-match {
-      background: #1a1010;
-      border: 1px solid #7f1d1d;
-      border-radius: 10px;
-      padding: 14px;
-      color: #fca5a5;
-      font-size: 13px;
-      line-height: 1.65;
-    }
-
-    .no-match strong {
-      display: block;
-      margin-bottom: 6px;
-      color: #f87171;
-    }
-
-    .matches-count {
-      font-size: 11px;
-      color: #4a5568;
-      margin-bottom: 10px;
-    }
-
-    .multiple-results {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .spinner {
-      display: inline-block;
-      width: 14px;
-      height: 14px;
-      border: 2px solid #4a5568;
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: spin 0.6s linear infinite;
-      vertical-align: middle;
-      margin-right: 6px;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-  </style>
+  <link rel="stylesheet" href="css/popup.css" />
 </head>
 <body>
 
-<div class="header">
-  <img src="icons/icon.png" style="width:28px;height:28px;border-radius:7px;" />
-  <div>
-    <h1>Error Explainer</h1>
-    <p>Symfony · Laravel · React · JS · PHP . etc</p>
+  <!-- ===== HEADER ===== -->
+  <div class="header">
+    <img src="icons/icon.png" style="width:28px;height:28px;border-radius:7px;" alt="Logo" />
+    <div>
+      <h1>Error Explainer</h1>
+      <p>Symfony · Laravel · React · JS · PHP · etc</p>
+    </div>
   </div>
-</div>
 
-<div class="input-area">
-  <textarea id="errorInput" placeholder="Colle ton message d'erreur ici…&#10;&#10;Ex: Call to a member function getId() on null&#10;Ex: No route found for GET /admin/users"></textarea>
-  <div class="actions">
-    <button class="btn-primary" id="btnAnalyze">Analyser</button>
-    <button class="btn-secondary" id="btnClear" title="Effacer">✕ Effacer</button>
+  <!-- ===== ZONE DE SAISIE ===== -->
+  <div class="input-area">
+
+    <!-- Bannière affichée quand une page d'erreur est détectée automatiquement -->
+    <div class="auto-detected-banner" id="autoDetectedBanner">
+      <span>⚡</span>
+      <span id="autoDetectedLabel">Page d'erreur détectée</span>
+    </div>
+
+    <!-- Filtre optionnel par technologie -->
+    <div class="tech-select-row">
+      <label for="techSelect">Tech :</label>
+      <select id="techSelect">
+        <option value="">— Toutes —</option>
+        <option value="axios">Axios</option>
+        <option value="composer">Composer</option>
+        <option value="css">CSS</option>
+        <option value="csharp">C#</option>
+        <option value="docker">Docker</option>
+        <option value="doctrine">Doctrine</option>
+        <option value="git">Git</option>
+        <option value="http">HTTP</option>
+        <option value="javascript">JavaScript</option>
+        <option value="laravel">Laravel</option>
+        <option value="mysql">MySQL</option>
+        <option value="nodejs">Node.js</option>
+        <option value="npm">npm</option>
+        <option value="php">PHP</option>
+        <option value="react">React</option>
+        <option value="symfony">Symfony</option>
+        <option value="typescript">TypeScript</option>
+        <option value="vite">Vite</option>
+      </select>
+    </div>
+
+    <!-- Zone de saisie de l'erreur -->
+    <textarea
+      id="errorInput"
+      placeholder="Colle ton message d'erreur ici…&#10;&#10;Ex: Call to a member function getId() on null&#10;Ex: No route found for GET /admin/users"
+    ></textarea>
+
+    <div class="actions">
+      <button class="btn-primary" id="btnAnalyze">Analyser</button>
+      <button class="btn-secondary" id="btnClear" title="Effacer">✕ Effacer</button>
+    </div>
+
   </div>
-</div>
 
-<div class="result-area" id="resultArea">
-  <div class="result-empty">
-    <span>🛠️</span>
-    Colle une erreur et clique sur Analyser
+  <!-- ===== ZONE DE RÉSULTAT ===== -->
+  <div class="result-area" id="resultArea">
+    <div class="result-empty">
+      <span>🛠️</span>
+      Colle une erreur et clique sur Analyser
+    </div>
   </div>
-</div>
 
-<script src="popup.js"></script>
+  <script src="js/popup.js"></script>
 </body>
 </html>

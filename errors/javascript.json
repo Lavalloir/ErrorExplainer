@@ -1,156 +1,52 @@
 [
-  {
-    "id": "JS-1",
-    "tech": "JavaScript",
-    "pattern": "is not defined",
-    "explication": "Tu utilises une variable ou fonction qui n'existe pas dans ce scope.",
-    "conseil": "Vérifie que tu l'as bien déclarée (`const`, `let`, `var`) avant utilisation, ou qu'elle est importée."
-  },
-  {
-    "id": "JS-2",
-    "tech": "JavaScript",
-    "pattern": "is not a function",
-    "explication": "Tu appelles avec `()` quelque chose qui n'est pas une fonction (undefined, string, number...).",
-    "conseil": "Fais un `console.log(maVariable)` avant l'appel pour voir ce qu'elle contient réellement."
-  },
-  {
-    "id": "JS-3",
-    "tech": "JavaScript",
-    "pattern": "Unexpected token",
-    "explication": "Erreur de syntaxe JS — un caractère inattendu est rencontré lors de l'analyse du code.",
-    "conseil": "Regarde la ligne indiquée : virgule en trop, accolade manquante, utilisation de syntaxe ES6+ sans transpilation."
-  },
-  {
-    "id": "JS-4",
-    "tech": "JavaScript",
-    "pattern": "Cannot set propert.+ of undefined",
-    "explication": "Tu essaies d'assigner une propriété sur une variable qui vaut `undefined`.",
-    "conseil": "Initialise bien ton objet avant d'y assigner des propriétés : `const obj = {}` puis `obj.prop = ...`"
-  },
-  {
-    "id": "JS-5",
-    "tech": "JavaScript",
-    "pattern": "SyntaxError: Cannot use import statement",
-    "explication": "Tu utilises `import` dans un contexte qui ne supporte pas les modules ES6.",
-    "conseil": "Ajoute `\"type\": \"module\"` dans ton `package.json`, ou utilise `require()` à la place."
-  },
-  {
-    "id": "JS-6",
-    "tech": "JavaScript",
-    "pattern": "Uncaught TypeError",
-    "explication": "Une opération est effectuée sur une valeur d'un type incorrect.",
-    "conseil": "Lis le détail de l'erreur pour savoir quelle opération échoue. Souvent une valeur null/undefined non vérifiée."
-  },
-  {
-    "id": "JS-7",
-    "tech": "JavaScript",
-    "pattern": "Maximum call stack",
-    "explication": "Récursion infinie — une fonction s'appelle elle-même indéfiniment.",
-    "conseil": "Vérifie tes conditions de sortie dans les fonctions récursives, ou transforme en boucle itérative."
-  },
-  {
-    "id": "JS-8",
-    "tech": "JavaScript",
-    "pattern": "Unhandled Promise Rejection",
-    "explication": "Une promesse a échoué sans être gérée par un `.catch()` ou un `try/catch`.",
-    "conseil": "Ajoute `.catch(err => console.error(err))` sur ta promesse, ou entoure ton `await` d'un `try/catch`."
-  },
-  {
-    "id": "JS-9",
-    "tech": "JavaScript",
-    "pattern": "Failed to fetch|NetworkError|net::ERR",
-    "explication": "La requête fetch a échoué — problème réseau, CORS, ou l'URL est incorrecte.",
-    "conseil": "Vérifie l'URL dans l'onglet Network des DevTools. Si c'est CORS, configure les headers côté serveur."
-  },
-  {
-    "id": "JS-10",
-    "tech": "JavaScript",
-    "pattern": "CORS|Access-Control-Allow-Origin",
-    "explication": "Le navigateur bloque la requête car le serveur n'autorise pas ton origine dans les headers CORS.",
-    "conseil": "Côté serveur, ajoute le header `Access-Control-Allow-Origin`. C'est un problème serveur, pas client."
-  },
-  {
-    "id": "JS-11",
-    "tech": "JavaScript",
-    "pattern": "JSON.parse|Unexpected token .+ in JSON",
-    "explication": "Tu essaies de parser une string qui n'est pas du JSON valide.",
-    "conseil": "Fais un `console.log()` de la string avant de la parser. Elle contient peut-être du HTML (erreur 500) au lieu de JSON."
-  },
-  {
-    "id": "JS-12",
-    "tech": "JavaScript",
-    "pattern": "localStorage|sessionStorage.+not defined",
-    "explication": "Tu accèdes au localStorage dans un environnement où il n'est pas disponible (SSR, iframe sandboxé).",
-    "conseil": "Vérifie `typeof window !== 'undefined'` avant d'utiliser localStorage en SSR."
-  },
-  {
-    "id": "JS-13",
-    "tech": "JavaScript",
-    "pattern": "ReferenceError",
-    "explication": "Tu accèdes à une variable qui n'existe pas dans le scope actuel.",
-    "conseil": "Vérifie que la variable est déclarée et dans le bon scope. Attention au hoisting avec `var` vs `let/const`."
-  },
-  {
-    "id": "JS-14",
-    "tech": "JavaScript",
-    "pattern": "addEventListener.+not a function|querySelector.+null",
-    "explication": "Tu essaies d'attacher un événement à un élément DOM qui n'existe pas encore au moment de l'exécution.",
-    "conseil": "Déplace ton JS en bas du `<body>` ou entoure-le dans `document.addEventListener('DOMContentLoaded', ...)`."
-  },
-  {
-    "id": "JS-15",
-    "tech": "JavaScript",
-    "pattern": "Cannot read properties of undefined",
-    "explication": "Tu essaies d'accéder à une propriété d'une variable qui est `undefined`.",
-    "conseil": "Utilise l'optional chaining : `objet?.propriete`. Vérifie que la variable est bien initialisée avant d'y accéder."
-  },
-  {
-    "id": "JS-16",
-    "tech": "JavaScript",
-    "pattern": "Cannot read properties of null",
-    "explication": "Tu essaies d'accéder à une propriété sur `null`.",
-    "conseil": "Vérifie que ton élément DOM existe (`document.querySelector` retourne null si l'élément est absent). Utilise `?.` pour être safe."
-  },
-  {
-    "id": "JS-17",
-    "tech": "JavaScript",
-    "pattern": "Uncaught RangeError: Invalid array length",
-    "explication": "Tu essaies de créer un tableau avec une taille négative ou trop grande.",
-    "conseil": "Vérifie la valeur passée à `new Array(n)` — elle doit être un entier positif raisonnable."
-  },
-  {
-    "id": "JS-18",
-    "tech": "JavaScript",
-    "pattern": "SyntaxError: Unexpected end of input",
-    "explication": "Le code JS est incomplet — une accolade, parenthèse ou crochet n'est pas fermé.",
-    "conseil": "Vérifie que toutes tes accolades `{}`, parenthèses `()` et crochets `[]` sont bien fermés."
-  },
-  {
-    "id": "JS-19",
-    "tech": "JavaScript",
-    "pattern": "Cannot assign to read only property",
-    "explication": "Tu essaies de modifier une propriété déclarée en lecture seule (Object.freeze, const, etc.).",
-    "conseil": "Vérifie si l'objet est freezé ou si la propriété est définie avec `writable: false`. Crée une copie de l'objet si tu dois le modifier."
-  },
-  {
-    "id": "JS-20",
-    "tech": "JavaScript",
-    "pattern": "$ is not defined|jQuery is not defined",
-    "explication": "jQuery n'est pas chargé ou n'est pas chargé avant ton script.",
-    "conseil": "Vérifie que la balise `<script>` de jQuery est bien placée AVANT ton script dans le HTML. Vérifie aussi le chemin du fichier jQuery."
-  },
-  {
-    "id": "JS-21",
-    "tech": "JavaScript",
-    "pattern": "is not iterable",
-    "explication": "Tu essaies d'utiliser `for...of` ou le spread `...` sur quelque chose qui n'est pas itérable (null, undefined, un objet simple).",
-    "conseil": "Vérifie que la variable est bien un tableau ou un itérable. Utilise `Array.isArray()` pour tester avant."
-  },
-  {
-    "id": "JS-22",
-    "tech": "JavaScript",
-    "pattern": "Identifier .+ has already been declared",
-    "explication": "Tu déclares deux fois la même variable avec `let` ou `const` dans le même scope.",
-    "conseil": "Renomme l'une des deux variables, ou utilise `var` si tu veux vraiment redéclarer (mais préfère éviter)."
-  }
+  {"id":"JS-1","tech":"JavaScript","pattern":"is not defined","explication":"Tu utilises une variable ou fonction qui n'existe pas dans ce scope.","conseil":"Vérifie que tu l'as bien déclarée (`const`, `let`, `var`) avant utilisation, ou qu'elle est importée."},
+  {"id":"JS-2","tech":"JavaScript","pattern":"is not a function","explication":"Tu appelles avec `()` quelque chose qui n'est pas une fonction.","conseil":"Fais un `console.log(maVariable)` avant l'appel pour voir ce qu'elle contient réellement."},
+  {"id":"JS-3","tech":"JavaScript","pattern":"Unexpected token","explication":"Erreur de syntaxe JS — un caractère inattendu est rencontré lors de l'analyse du code.","conseil":"Regarde la ligne indiquée : virgule en trop, accolade manquante, utilisation de syntaxe ES6+ sans transpilation."},
+  {"id":"JS-4","tech":"JavaScript","pattern":"Cannot set propert.+ of undefined","explication":"Tu essaies d'assigner une propriété sur une variable qui vaut `undefined`.","conseil":"Initialise bien ton objet avant d'y assigner des propriétés : `const obj = {}` puis `obj.prop = ...`"},
+  {"id":"JS-5","tech":"JavaScript","pattern":"SyntaxError: Cannot use import statement","explication":"Tu utilises `import` dans un contexte qui ne supporte pas les modules ES6.","conseil":"Ajoute `\"type\": \"module\"` dans ton `package.json`, ou utilise `require()` à la place."},
+  {"id":"JS-6","tech":"JavaScript","pattern":"Uncaught TypeError","explication":"Une opération est effectuée sur une valeur d'un type incorrect.","conseil":"Lis le détail de l'erreur pour savoir quelle opération échoue. Souvent une valeur null/undefined non vérifiée."},
+  {"id":"JS-7","tech":"JavaScript","pattern":"Maximum call stack","explication":"Récursion infinie — une fonction s'appelle elle-même indéfiniment.","conseil":"Vérifie tes conditions de sortie dans les fonctions récursives, ou transforme en boucle itérative."},
+  {"id":"JS-8","tech":"JavaScript","pattern":"Unhandled Promise Rejection","explication":"Une promesse a échoué sans être gérée par un `.catch()` ou un `try/catch`.","conseil":"Ajoute `.catch(err => console.error(err))` sur ta promesse, ou entoure ton `await` d'un `try/catch`."},
+  {"id":"JS-9","tech":"JavaScript","pattern":"Failed to fetch|NetworkError|net::ERR","explication":"La requête fetch a échoué — problème réseau, CORS, ou l'URL est incorrecte.","conseil":"Vérifie l'URL dans l'onglet Network des DevTools. Si c'est CORS, configure les headers côté serveur."},
+  {"id":"JS-10","tech":"JavaScript","pattern":"CORS|Access-Control-Allow-Origin","explication":"Le navigateur bloque la requête car le serveur n'autorise pas ton origine dans les headers CORS.","conseil":"Côté serveur, ajoute le header `Access-Control-Allow-Origin`. C'est un problème serveur, pas client."},
+  {"id":"JS-11","tech":"JavaScript","pattern":"JSON.parse|Unexpected token .+ in JSON","explication":"Tu essaies de parser une string qui n'est pas du JSON valide.","conseil":"Fais un `console.log()` de la string avant de la parser. Elle contient peut-être du HTML (erreur 500) au lieu de JSON."},
+  {"id":"JS-12","tech":"JavaScript","pattern":"localStorage|sessionStorage.+not defined","explication":"Tu accèdes au localStorage dans un environnement où il n'est pas disponible (SSR, iframe sandboxé).","conseil":"Vérifie `typeof window !== 'undefined'` avant d'utiliser localStorage en SSR."},
+  {"id":"JS-13","tech":"JavaScript","pattern":"ReferenceError","explication":"Tu accèdes à une variable qui n'existe pas dans le scope actuel.","conseil":"Vérifie que la variable est déclarée et dans le bon scope. Attention au hoisting avec `var` vs `let/const`."},
+  {"id":"JS-14","tech":"JavaScript","pattern":"addEventListener.+not a function|querySelector.+null","explication":"Tu essaies d'attacher un événement à un élément DOM qui n'existe pas encore.","conseil":"Déplace ton JS en bas du `<body>` ou entoure-le dans `document.addEventListener('DOMContentLoaded', ...)`."},
+  {"id":"JS-15","tech":"JavaScript","pattern":"Cannot read properties of undefined","explication":"Tu essaies d'accéder à une propriété d'une variable qui est `undefined`.","conseil":"Utilise l'optional chaining : `objet?.propriete`. Vérifie que la variable est bien initialisée avant d'y accéder."},
+  {"id":"JS-16","tech":"JavaScript","pattern":"Cannot read properties of null","explication":"Tu essaies d'accéder à une propriété sur `null`.","conseil":"Vérifie que ton élément DOM existe. `document.querySelector` retourne null si l'élément est absent. Utilise `?.` pour être safe."},
+  {"id":"JS-17","tech":"JavaScript","pattern":"SyntaxError: Unexpected end of input","explication":"Le code JS est incomplet — une accolade, parenthèse ou crochet n'est pas fermé.","conseil":"Vérifie que toutes tes accolades `{}`, parenthèses `()` et crochets `[]` sont bien fermés."},
+  {"id":"JS-18","tech":"JavaScript","pattern":"Cannot assign to read only property","explication":"Tu essaies de modifier une propriété déclarée en lecture seule.","conseil":"Vérifie si l'objet est freezé ou si la propriété est définie avec `writable: false`. Crée une copie de l'objet si tu dois le modifier."},
+  {"id":"JS-19","tech":"JavaScript","pattern":"$ is not defined|jQuery is not defined","explication":"jQuery n'est pas chargé ou n'est pas chargé avant ton script.","conseil":"Vérifie que la balise `<script>` de jQuery est bien placée AVANT ton script dans le HTML. Vérifie aussi le chemin du fichier jQuery."},
+  {"id":"JS-20","tech":"JavaScript","pattern":"is not iterable","explication":"Tu essaies d'utiliser `for...of` ou le spread `...` sur quelque chose qui n'est pas itérable.","conseil":"Vérifie que la variable est bien un tableau ou un itérable. Utilise `Array.isArray()` pour tester avant."},
+  {"id":"JS-21","tech":"JavaScript","pattern":"Identifier .+ has already been declared","explication":"Tu déclares deux fois la même variable avec `let` ou `const` dans le même scope.","conseil":"Renomme l'une des deux variables, ou utilise `var` si tu veux vraiment redéclarer (mais préfère éviter)."},
+  {"id":"JS-22","tech":"JavaScript","pattern":"Cannot read property .+ of undefined|Cannot read property .+ of null","explication":"Tu chaînes des accès de propriétés sur une valeur null ou undefined.","conseil":"Utilise l'optional chaining pour sécuriser l'accès : `a?.b?.c` au lieu de `a.b.c`."},
+  {"id":"JS-23","tech":"JavaScript","pattern":"Uncaught RangeError","explication":"Une valeur est hors de la plage autorisée — taille de tableau invalide, dépassement de pile, ou valeur numérique hors limites.","conseil":"Lis le détail : `Invalid array length` → vérifie la taille du tableau. `Maximum call stack` → récursion infinie. `toFixed` → argument entre 0 et 100."},
+  {"id":"JS-24","tech":"JavaScript","pattern":"Unexpected end of JSON input","explication":"Tu parses une chaîne JSON vide ou tronquée.","conseil":"Vérifie que la réponse de ton API n'est pas vide. Ajoute une vérification : `if (text) { JSON.parse(text) }`."},
+  {"id":"JS-25","tech":"JavaScript","pattern":"Cannot destructure property .+ as it is undefined","explication":"Tu essaies de déstructurer un objet ou tableau qui est `undefined`.","conseil":"Ajoute une valeur par défaut dans la déstructuration : `const { prop } = monObjet ?? {}` ou vérifie que la variable est définie avant."},
+  {"id":"JS-26","tech":"JavaScript","pattern":"async.*await.*is not allowed","explication":"Tu utilises `await` en dehors d'une fonction `async`.","conseil":"La fonction qui contient `await` doit être déclarée avec `async` : `async function mafn() { await ... }`."},
+  {"id":"JS-27","tech":"JavaScript","pattern":"Module not found|Cannot find module","explication":"L'import/require ne trouve pas le module demandé.","conseil":"Vérifie le chemin (`./ `pour les fichiers locaux). Lance `npm install` si c'est un package. Vérifie l'orthographe du nom du module."},
+  {"id":"JS-28","tech":"JavaScript","pattern":"prototype is undefined|Cannot set properties of undefined.*prototype","explication":"Tu essaies d'accéder au prototype d'une valeur non définie.","conseil":"Vérifie que la variable/classe est bien définie et chargée avant d'accéder à son prototype."},
+  {"id":"JS-29","tech":"JavaScript","pattern":"Cross-origin|blocked by CORS policy","explication":"Le navigateur bloque la requête cross-origin — la politique CORS du serveur n'autorise pas ton domaine.","conseil":"Configure les headers CORS côté serveur. En dev tu peux utiliser un proxy Vite/Webpack pour éviter le problème."},
+  {"id":"JS-30","tech":"JavaScript","pattern":"Illegal invocation","explication":"Tu appelles une méthode native dans un contexte incorrect — souvent en passant une méthode built-in comme callback sans la lier.","conseil":"Lie la méthode à son contexte : `element.addEventListener('click', console.log.bind(console))` ou utilise une arrow function : `() => console.log(...)`."},
+  {"id":"JS-31","tech":"JavaScript","pattern":"Permission denied|NotAllowedError","explication":"Le navigateur a refusé l'accès à une API nécessitant une permission (caméra, micro, géolocalisation, clipboard).","conseil":"Demande la permission avec l'API appropriée et gère le refus. Assure-toi d'être en HTTPS — les APIs sensibles ne fonctionnent pas en HTTP."},
+  {"id":"JS-32","tech":"JavaScript","pattern":"QuotaExceededError|localStorage.*quota","explication":"Le localStorage est plein — tu as dépassé la limite de stockage (généralement 5MB).","conseil":"Nettoie les données inutiles avec `localStorage.removeItem()` ou `localStorage.clear()`. Compresse les données avant de les stocker."},
+  {"id":"JS-33","tech":"JavaScript","pattern":"EventEmitter memory leak|MaxListenersExceededWarning","explication":"Tu ajoutes trop d'écouteurs d'événements sur le même émetteur — probablement un écouteur dans une boucle sans le retirer.","conseil":"Retire les écouteurs avec `removeEventListener` quand ils ne sont plus nécessaires. Augmente la limite avec `setMaxListeners()` si c'est intentionnel."},
+  {"id":"JS-34","tech":"JavaScript","pattern":"Cannot convert undefined or null to object","explication":"Tu passes `null` ou `undefined` à `Object.keys()`, `Object.values()`, ou `Object.entries()`.","conseil":"Vérifie que la valeur est un objet avant : `if (obj && typeof obj === 'object') { Object.keys(obj) }`."},
+  {"id":"JS-35","tech":"JavaScript","pattern":"IntersectionObserver is not defined|ResizeObserver is not defined","explication":"Tu utilises une API Web moderne qui n'est pas disponible dans cet environnement (navigateur ancien, Node.js, SSR).","conseil":"Vérifie la compatibilité navigateur sur caniuse.com. En SSR, vérifie `typeof window !== 'undefined'` avant d'utiliser ces APIs."},
+  {"id":"JS-36","tech":"JavaScript","pattern":"fetch is not defined","explication":"L'API `fetch` n'est pas disponible dans cet environnement — souvent Node.js < 18.","conseil":"En Node.js < 18, utilise `node-fetch` : `npm install node-fetch`. En Node.js 18+, fetch est disponible nativement."},
+  {"id":"JS-37","tech":"JavaScript","pattern":"Symbol|WeakMap|WeakSet .+ not defined","explication":"Tu utilises une fonctionnalité ES6+ qui n'est pas disponible dans ce navigateur ou environnement.","conseil":"Vérifie la compatibilité sur caniuse.com. Utilise Babel pour transpiler vers ES5 si tu dois supporter des navigateurs anciens."},
+  {"id":"JS-38","tech":"JavaScript","pattern":"document is not defined|window is not defined","explication":"Tu accèdes à des objets du DOM (`document`, `window`) dans un environnement sans DOM — Node.js ou SSR.","conseil":"Entoure le code qui utilise `document`/`window` dans `if (typeof window !== 'undefined') { ... }` pour le rendre compatible SSR."},
+  {"id":"JS-39","tech":"JavaScript","pattern":"The \"path\" argument must be of type string","explication":"Tu passes une valeur non-string (undefined, null, number) là où Node.js attend un chemin de fichier.","conseil":"Vérifie la valeur de la variable avant de la passer à `fs.readFile()`, `path.join()`, etc. Utilise `String(valeur)` si nécessaire."},
+  {"id":"JS-40","tech":"JavaScript","pattern":"Cannot set headers after they are sent","explication":"Tu essaies d'envoyer des headers HTTP après que la réponse a déjà été envoyée au client — dans Express/Node.","conseil":"Vérifie que tu n'appelles `res.send()`, `res.json()`, ou `res.redirect()` qu'une seule fois. Ajoute un `return` après chaque réponse dans les conditions."},
+  {"id":"JS-41","tech":"JavaScript","pattern":"AbortError|signal is aborted","explication":"La requête fetch a été annulée via un `AbortController`.","conseil":"C'est souvent intentionnel (annuler une requête quand un composant se démonte). Vérifie si tu gères bien ce cas avec `if (error.name !== 'AbortError') { ... }`."},
+  {"id":"JS-42","tech":"JavaScript","pattern":"Uncaught SyntaxError: Invalid or unexpected token","explication":"Caractère invalide dans le code — souvent des guillemets typographiques copiés depuis un éditeur de texte.","conseil":"Remplace les guillemets courbes par des guillemets droits. Vérifie aussi les apostrophes typographiques dans ton code."},
+  {"id":"JS-43","tech":"JavaScript","pattern":"Cannot access .+ before initialization","explication":"Tu accèdes à une variable `let` ou `const` avant sa déclaration dans le code — temporal dead zone.","conseil":"Contrairement à `var`, `let` et `const` ne sont pas hoistés. Déplace la déclaration avant son utilisation."},
+  {"id":"JS-44","tech":"JavaScript","pattern":"Strict mode|use strict","explication":"Une opération interdite en mode strict a été effectuée.","conseil":"Le mode strict interdit : variables non déclarées, suppression de variables, mots réservés comme noms. Corrige le code en question."},
+  {"id":"JS-45","tech":"JavaScript","pattern":"encodeURIComponent|decodeURIComponent.*malformed","explication":"Tu essaies de décoder une URI mal formée.","conseil":"Entoure `decodeURIComponent()` dans un try/catch. Vérifie que la chaîne est bien encodée avant de la décoder."},
+  {"id":"JS-46","tech":"JavaScript","pattern":"getComputedStyle|offsetWidth.*null","explication":"Tu essaies d'obtenir le style calculé d'un élément qui n'existe pas dans le DOM.","conseil":"Vérifie que l'élément est bien inséré dans le DOM avant d'appeler ces méthodes. Utilise `document.getElementById()` et vérifie le résultat."},
+  {"id":"JS-47","tech":"JavaScript","pattern":"Array is not a function|map is not a function|filter is not a function","explication":"Tu appelles une méthode de tableau sur quelque chose qui n'est pas un tableau.","conseil":"Vérifie le type de ta variable avec `console.log(typeof maVar, Array.isArray(maVar))`. Souvent un objet ou null retourné par une API."},
+  {"id":"JS-48","tech":"JavaScript","pattern":"WebSocket.*CLOSED|WebSocket.*failed","explication":"La connexion WebSocket a échoué ou a été fermée inopinément.","conseil":"Vérifie que le serveur WebSocket tourne et que l'URL est correcte (ws:// ou wss://). Implémente une logique de reconnexion automatique."},
+  {"id":"JS-49","tech":"JavaScript","pattern":"offsetParent is null","explication":"Tu accèdes à `offsetParent` d'un élément qui est caché (`display: none`) ou non attaché au DOM.","conseil":"Vérifie que l'élément est visible et attaché au DOM avant d'accéder à ses propriétés de positionnement."},
+  {"id":"JS-50","tech":"JavaScript","pattern":"Cannot use 'in' operator to search for .+ in","explication":"Tu utilises l'opérateur `in` sur une valeur qui n'est pas un objet (string, number, null, undefined).","conseil":"L'opérateur `in` ne fonctionne que sur les objets. Vérifie le type avec `typeof` avant : `if (typeof val === 'object' && val !== null && 'prop' in val)`."}
 ]
