@@ -1,0 +1,156 @@
+[
+  {
+    "id": "JS-1",
+    "tech": "JavaScript",
+    "pattern": "is not defined",
+    "explication": "Tu utilises une variable ou fonction qui n'existe pas dans ce scope.",
+    "conseil": "Vérifie que tu l'as bien déclarée (`const`, `let`, `var`) avant utilisation, ou qu'elle est importée."
+  },
+  {
+    "id": "JS-2",
+    "tech": "JavaScript",
+    "pattern": "is not a function",
+    "explication": "Tu appelles avec `()` quelque chose qui n'est pas une fonction (undefined, string, number...).",
+    "conseil": "Fais un `console.log(maVariable)` avant l'appel pour voir ce qu'elle contient réellement."
+  },
+  {
+    "id": "JS-3",
+    "tech": "JavaScript",
+    "pattern": "Unexpected token",
+    "explication": "Erreur de syntaxe JS — un caractère inattendu est rencontré lors de l'analyse du code.",
+    "conseil": "Regarde la ligne indiquée : virgule en trop, accolade manquante, utilisation de syntaxe ES6+ sans transpilation."
+  },
+  {
+    "id": "JS-4",
+    "tech": "JavaScript",
+    "pattern": "Cannot set propert.+ of undefined",
+    "explication": "Tu essaies d'assigner une propriété sur une variable qui vaut `undefined`.",
+    "conseil": "Initialise bien ton objet avant d'y assigner des propriétés : `const obj = {}` puis `obj.prop = ...`"
+  },
+  {
+    "id": "JS-5",
+    "tech": "JavaScript",
+    "pattern": "SyntaxError: Cannot use import statement",
+    "explication": "Tu utilises `import` dans un contexte qui ne supporte pas les modules ES6.",
+    "conseil": "Ajoute `\"type\": \"module\"` dans ton `package.json`, ou utilise `require()` à la place."
+  },
+  {
+    "id": "JS-6",
+    "tech": "JavaScript",
+    "pattern": "Uncaught TypeError",
+    "explication": "Une opération est effectuée sur une valeur d'un type incorrect.",
+    "conseil": "Lis le détail de l'erreur pour savoir quelle opération échoue. Souvent une valeur null/undefined non vérifiée."
+  },
+  {
+    "id": "JS-7",
+    "tech": "JavaScript",
+    "pattern": "Maximum call stack",
+    "explication": "Récursion infinie — une fonction s'appelle elle-même indéfiniment.",
+    "conseil": "Vérifie tes conditions de sortie dans les fonctions récursives, ou transforme en boucle itérative."
+  },
+  {
+    "id": "JS-8",
+    "tech": "JavaScript",
+    "pattern": "Unhandled Promise Rejection",
+    "explication": "Une promesse a échoué sans être gérée par un `.catch()` ou un `try/catch`.",
+    "conseil": "Ajoute `.catch(err => console.error(err))` sur ta promesse, ou entoure ton `await` d'un `try/catch`."
+  },
+  {
+    "id": "JS-9",
+    "tech": "JavaScript",
+    "pattern": "Failed to fetch|NetworkError|net::ERR",
+    "explication": "La requête fetch a échoué — problème réseau, CORS, ou l'URL est incorrecte.",
+    "conseil": "Vérifie l'URL dans l'onglet Network des DevTools. Si c'est CORS, configure les headers côté serveur."
+  },
+  {
+    "id": "JS-10",
+    "tech": "JavaScript",
+    "pattern": "CORS|Access-Control-Allow-Origin",
+    "explication": "Le navigateur bloque la requête car le serveur n'autorise pas ton origine dans les headers CORS.",
+    "conseil": "Côté serveur, ajoute le header `Access-Control-Allow-Origin`. C'est un problème serveur, pas client."
+  },
+  {
+    "id": "JS-11",
+    "tech": "JavaScript",
+    "pattern": "JSON.parse|Unexpected token .+ in JSON",
+    "explication": "Tu essaies de parser une string qui n'est pas du JSON valide.",
+    "conseil": "Fais un `console.log()` de la string avant de la parser. Elle contient peut-être du HTML (erreur 500) au lieu de JSON."
+  },
+  {
+    "id": "JS-12",
+    "tech": "JavaScript",
+    "pattern": "localStorage|sessionStorage.+not defined",
+    "explication": "Tu accèdes au localStorage dans un environnement où il n'est pas disponible (SSR, iframe sandboxé).",
+    "conseil": "Vérifie `typeof window !== 'undefined'` avant d'utiliser localStorage en SSR."
+  },
+  {
+    "id": "JS-13",
+    "tech": "JavaScript",
+    "pattern": "ReferenceError",
+    "explication": "Tu accèdes à une variable qui n'existe pas dans le scope actuel.",
+    "conseil": "Vérifie que la variable est déclarée et dans le bon scope. Attention au hoisting avec `var` vs `let/const`."
+  },
+  {
+    "id": "JS-14",
+    "tech": "JavaScript",
+    "pattern": "addEventListener.+not a function|querySelector.+null",
+    "explication": "Tu essaies d'attacher un événement à un élément DOM qui n'existe pas encore au moment de l'exécution.",
+    "conseil": "Déplace ton JS en bas du `<body>` ou entoure-le dans `document.addEventListener('DOMContentLoaded', ...)`."
+  },
+  {
+    "id": "JS-15",
+    "tech": "JavaScript",
+    "pattern": "Cannot read properties of undefined",
+    "explication": "Tu essaies d'accéder à une propriété d'une variable qui est `undefined`.",
+    "conseil": "Utilise l'optional chaining : `objet?.propriete`. Vérifie que la variable est bien initialisée avant d'y accéder."
+  },
+  {
+    "id": "JS-16",
+    "tech": "JavaScript",
+    "pattern": "Cannot read properties of null",
+    "explication": "Tu essaies d'accéder à une propriété sur `null`.",
+    "conseil": "Vérifie que ton élément DOM existe (`document.querySelector` retourne null si l'élément est absent). Utilise `?.` pour être safe."
+  },
+  {
+    "id": "JS-17",
+    "tech": "JavaScript",
+    "pattern": "Uncaught RangeError: Invalid array length",
+    "explication": "Tu essaies de créer un tableau avec une taille négative ou trop grande.",
+    "conseil": "Vérifie la valeur passée à `new Array(n)` — elle doit être un entier positif raisonnable."
+  },
+  {
+    "id": "JS-18",
+    "tech": "JavaScript",
+    "pattern": "SyntaxError: Unexpected end of input",
+    "explication": "Le code JS est incomplet — une accolade, parenthèse ou crochet n'est pas fermé.",
+    "conseil": "Vérifie que toutes tes accolades `{}`, parenthèses `()` et crochets `[]` sont bien fermés."
+  },
+  {
+    "id": "JS-19",
+    "tech": "JavaScript",
+    "pattern": "Cannot assign to read only property",
+    "explication": "Tu essaies de modifier une propriété déclarée en lecture seule (Object.freeze, const, etc.).",
+    "conseil": "Vérifie si l'objet est freezé ou si la propriété est définie avec `writable: false`. Crée une copie de l'objet si tu dois le modifier."
+  },
+  {
+    "id": "JS-20",
+    "tech": "JavaScript",
+    "pattern": "$ is not defined|jQuery is not defined",
+    "explication": "jQuery n'est pas chargé ou n'est pas chargé avant ton script.",
+    "conseil": "Vérifie que la balise `<script>` de jQuery est bien placée AVANT ton script dans le HTML. Vérifie aussi le chemin du fichier jQuery."
+  },
+  {
+    "id": "JS-21",
+    "tech": "JavaScript",
+    "pattern": "is not iterable",
+    "explication": "Tu essaies d'utiliser `for...of` ou le spread `...` sur quelque chose qui n'est pas itérable (null, undefined, un objet simple).",
+    "conseil": "Vérifie que la variable est bien un tableau ou un itérable. Utilise `Array.isArray()` pour tester avant."
+  },
+  {
+    "id": "JS-22",
+    "tech": "JavaScript",
+    "pattern": "Identifier .+ has already been declared",
+    "explication": "Tu déclares deux fois la même variable avec `let` ou `const` dans le même scope.",
+    "conseil": "Renomme l'une des deux variables, ou utilise `var` si tu veux vraiment redéclarer (mais préfère éviter)."
+  }
+]

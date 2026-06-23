@@ -1,0 +1,23 @@
+[
+  {
+    "id": "NPM-1",
+    "tech": "npm",
+    "pattern": "npm ERR! ERESOLVE",
+    "explication": "npm ne peut pas résoudre l'arbre de dépendances — conflit de versions entre packages.",
+    "conseil": "Essaie `npm install --legacy-peer-deps` pour passer outre les conflits de peer dependencies. Vérifie si une version plus récente du package résout le problème."
+  },
+  {
+    "id": "NPM-2",
+    "tech": "npm",
+    "pattern": "npm WARN deprecated",
+    "explication": "Un package que tu utilises est déprécié — il n'est plus maintenu.",
+    "conseil": "C'est un avertissement, pas une erreur bloquante. Cherche l'alternative recommandée dans le message ou la doc du package."
+  },
+  {
+    "id": "NPM-3",
+    "tech": "npm",
+    "pattern": "command not found|is not recognized",
+    "explication": "La commande CLI que tu lances n'est pas installée ou pas dans le PATH.",
+    "conseil": "Installe le package globalement (`npm install -g nom-package`) ou utilise `npx nom-package`."
+  }
+]

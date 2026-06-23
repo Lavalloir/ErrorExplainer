@@ -1,0 +1,51 @@
+[
+  {
+    "id": "HTT-1",
+    "tech": "HTTP",
+    "pattern": "401|Unauthorized",
+    "explication": "La requête nécessite une authentification. L'utilisateur n'est pas connecté ou le token est invalide/expiré.",
+    "conseil": "Vérifie que tu envoies bien le header `Authorization: Bearer {token}`. Si le token est expiré, rafraîchis-le."
+  },
+  {
+    "id": "HTT-2",
+    "tech": "HTTP",
+    "pattern": "403|Forbidden",
+    "explication": "L'utilisateur est authentifié mais n'a pas les droits pour cette ressource.",
+    "conseil": "C'est un problème de permissions/rôles. Vérifie ta logique d'autorisation (policies Laravel, voters Symfony)."
+  },
+  {
+    "id": "HTT-3",
+    "tech": "HTTP",
+    "pattern": "404|Not Found",
+    "explication": "La ressource demandée n'existe pas à cette URL.",
+    "conseil": "Vérifie l'URL, que la route est bien définie, et que la ressource existe en BDD."
+  },
+  {
+    "id": "HTT-4",
+    "tech": "HTTP",
+    "pattern": "422|Unprocessable Entity",
+    "explication": "Les données envoyées ne passent pas la validation côté serveur.",
+    "conseil": "Regarde le corps de la réponse — il contient les détails des champs invalides. Corrige les données envoyées."
+  },
+  {
+    "id": "HTT-5",
+    "tech": "HTTP",
+    "pattern": "500|Internal Server Error",
+    "explication": "Erreur côté serveur — une exception non gérée a planté l'application.",
+    "conseil": "Regarde les logs serveur (`storage/logs/laravel.log`, `var/log/dev.log`). C'est toujours un bug dans ton code serveur."
+  },
+  {
+    "id": "HTT-6",
+    "tech": "HTTP",
+    "pattern": "502|Bad Gateway",
+    "explication": "Le serveur en amont (PHP-FPM, Node, etc.) ne répond pas correctement à ton reverse proxy (Nginx, Apache).",
+    "conseil": "Vérifie que PHP-FPM ou ton serveur app tourne bien. Regarde les logs Nginx/Apache."
+  },
+  {
+    "id": "HTT-7",
+    "tech": "HTTP",
+    "pattern": "504|Gateway Timeout",
+    "explication": "Le serveur a mis trop de temps à répondre.",
+    "conseil": "Optimise la requête lente (SQL, API externe). Augmente le timeout dans la config Nginx si nécessaire."
+  }
+]

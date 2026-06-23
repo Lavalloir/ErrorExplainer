@@ -1,0 +1,135 @@
+[
+  {
+    "id": "LAR-1",
+    "tech": "Laravel",
+    "pattern": "Target class .+ does not exist",
+    "explication": "Laravel essaie de résoudre une classe via le conteneur IoC mais ne la trouve pas.",
+    "conseil": "Vérifie que la classe est bien importée, que le provider est enregistré dans `config/app.php`, et lance `php artisan config:clear`."
+  },
+  {
+    "id": "LAR-2",
+    "tech": "Laravel",
+    "pattern": "CSRF token mismatch",
+    "explication": "Le token de sécurité du formulaire est absent ou invalide.",
+    "conseil": "Ajoute `@csrf` dans ton formulaire Blade, ou ajoute la route dans `VerifyCsrfToken::$except` si c'est une API."
+  },
+  {
+    "id": "LAR-3",
+    "tech": "Laravel",
+    "pattern": "Route .+ not defined",
+    "explication": "Tu utilises `route('nom')` mais aucune route n'a ce nom.",
+    "conseil": "Lance `php artisan route:list` pour voir les noms disponibles. Vérifie `->name('...')` dans tes routes."
+  },
+  {
+    "id": "LAR-4",
+    "tech": "Laravel",
+    "pattern": "Column not found|Unknown column",
+    "explication": "Tu essaies d'accéder à une colonne qui n'existe pas dans la table.",
+    "conseil": "Lance tes migrations avec `php artisan migrate`. Vérifie que le nom de colonne dans ton code correspond exactement à la BDD."
+  },
+  {
+    "id": "LAR-5",
+    "tech": "Laravel",
+    "pattern": "No query results for model",
+    "explication": "`findOrFail()` n'a rien trouvé et a lancé une exception 404.",
+    "conseil": "Utilise `find()` si tu veux gérer le cas null toi-même, ou vérifie que l'ID existe bien en BDD."
+  },
+  {
+    "id": "LAR-6",
+    "tech": "Laravel",
+    "pattern": "Mass assignment",
+    "explication": "Tu essaies d'assigner en masse des champs non autorisés sur un modèle Eloquent.",
+    "conseil": "Ajoute les champs dans `$fillable` du modèle, ou utilise `$guarded = []` pour tout autoriser (attention en prod)."
+  },
+  {
+    "id": "LAR-7",
+    "tech": "Laravel",
+    "pattern": "Relationship .+ does not exist",
+    "explication": "Tu appelles une relation Eloquent qui n'est pas définie sur le modèle.",
+    "conseil": "Ajoute la méthode de relation manquante dans le modèle (`hasMany`, `belongsTo`, etc.)."
+  },
+  {
+    "id": "LAR-8",
+    "tech": "Laravel",
+    "pattern": "View .+ not found",
+    "explication": "Laravel ne trouve pas le fichier de vue Blade demandé.",
+    "conseil": "Vérifie le chemin : `view('dossier.fichier')` correspond à `resources/views/dossier/fichier.blade.php`."
+  },
+  {
+    "id": "LAR-9",
+    "tech": "Laravel",
+    "pattern": "Integrity constraint violation",
+    "explication": "Une contrainte de base de données est violée (clé étrangère, unicité, not null).",
+    "conseil": "Vérifie que l'enregistrement parent existe avant d'insérer l'enfant, ou que tu ne crées pas un doublon sur un champ unique."
+  },
+  {
+    "id": "LAR-10",
+    "tech": "Laravel",
+    "pattern": "TokenMismatchException",
+    "explication": "Même chose que CSRF token mismatch — le token de session a expiré ou est absent.",
+    "conseil": "Ajoute `@csrf` dans le formulaire. Si l'utilisateur est resté longtemps sur la page, la session a expiré."
+  },
+  {
+    "id": "LAR-11",
+    "tech": "Laravel",
+    "pattern": "contains .+ abstract method",
+    "explication": "Tu instancies une classe abstraite ou tu n'as pas implémenté toutes les méthodes d'une interface.",
+    "conseil": "Implémente toutes les méthodes abstraites requises dans ta classe concrète."
+  },
+  {
+    "id": "LAR-12",
+    "tech": "Laravel",
+    "pattern": "syntax error",
+    "explication": "Ton fichier PHP contient une erreur de syntaxe qui empêche Laravel de démarrer.",
+    "conseil": "Lance `php -l fichier.php` pour identifier le fichier et la ligne exacte de l'erreur."
+  },
+  {
+    "id": "LAR-13",
+    "tech": "Laravel",
+    "pattern": "Call to undefined method .+::query",
+    "explication": "Tu appelles `query()` sur une classe qui n'est pas un modèle Eloquent ou qui n'hérite pas de Model.",
+    "conseil": "Vérifie que ta classe hérite bien de `Illuminate\\Database\\Eloquent\\Model`."
+  },
+  {
+    "id": "LAR-14",
+    "tech": "Laravel",
+    "pattern": "Trying to get property .+ of non-object",
+    "explication": "Tu accèdes à une propriété d'une variable qui n'est pas un objet (souvent null retourné par une requête).",
+    "conseil": "Vérifie que ta requête retourne bien un objet avant d'accéder à ses propriétés. Utilise `optional($objet)->propriete` pour éviter l'erreur."
+  },
+  {
+    "id": "LAR-15",
+    "tech": "Laravel",
+    "pattern": "Class .+ is not a valid event",
+    "explication": "L'événement que tu dispatches n'est pas correctement défini.",
+    "conseil": "Vérifie que la classe d'événement existe et implémente bien l'interface ou hérite de la bonne classe de base."
+  },
+  {
+    "id": "LAR-16",
+    "tech": "Laravel",
+    "pattern": "App\\Models\\.+ not found|model .+ could not be found",
+    "explication": "Laravel ne trouve pas le modèle Eloquent demandé.",
+    "conseil": "Vérifie que le fichier du modèle existe dans `app/Models/` et que le namespace est correct."
+  },
+  {
+    "id": "LAR-17",
+    "tech": "Laravel",
+    "pattern": "Mix manifest not found",
+    "explication": "Le fichier `public/mix-manifest.json` n'existe pas — Laravel Mix n'a pas été compilé.",
+    "conseil": "Lance `npm run dev` ou `npm run build` pour compiler les assets. Vérifie que tu as bien lancé `npm install` avant."
+  },
+  {
+    "id": "LAR-18",
+    "tech": "Laravel",
+    "pattern": "Connection refused|SQLSTATE\\[HY000\\] \\[2002\\]",
+    "explication": "Laravel ne peut pas se connecter à la base de données — le serveur MySQL n'est pas démarré ou les identifiants sont incorrects.",
+    "conseil": "Vérifie que MySQL tourne. Contrôle les paramètres dans ton `.env` : `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`."
+  },
+  {
+    "id": "LAR-19",
+    "tech": "Laravel",
+    "pattern": "Illuminate\\\\Database\\\\QueryException",
+    "explication": "Une erreur SQL s'est produite lors de l'exécution d'une requête Eloquent ou Query Builder.",
+    "conseil": "Lis le message SQL dans l'exception pour identifier la cause exacte. Souvent une colonne manquante, un type incompatible ou une contrainte violée."
+  }
+]

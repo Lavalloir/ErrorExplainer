@@ -1,0 +1,198 @@
+[
+  {
+    "id": "SYM-1",
+    "tech": "Symfony",
+    "pattern": "No route found for",
+    "explication": "Symfony ne trouve pas de route correspondant à l'URL demandée.",
+    "conseil": "Lance `php bin/console debug:router` pour lister les routes. Vérifie le chemin, la méthode HTTP (GET/POST), et que le bundle est bien chargé."
+  },
+  {
+    "id": "SYM-2",
+    "tech": "Symfony",
+    "pattern": "The controller must return a response",
+    "explication": "Ton action de contrôleur ne retourne rien (ou `null`). Symfony attend toujours un objet `Response`.",
+    "conseil": "Ajoute un `return $this->render(...)` ou `return new Response(...)` à la fin de ton action."
+  },
+  {
+    "id": "SYM-3",
+    "tech": "Symfony",
+    "pattern": "Variable .+ does not exist",
+    "explication": "Tu utilises une variable dans Twig qui n'a pas été passée depuis le contrôleur.",
+    "conseil": "Dans ton `render()`, ajoute la variable manquante dans le tableau : `['maVariable' => $valeur]`."
+  },
+  {
+    "id": "SYM-4",
+    "tech": "Symfony",
+    "pattern": "Mapping Exception|MappingException",
+    "explication": "Doctrine ne comprend pas la configuration de ton entité (annotation/attribut manquant ou mal formé).",
+    "conseil": "Vérifie tes attributs `#[ORM\\...]` sur l'entité. Lance `php bin/console doctrine:schema:validate`."
+  },
+  {
+    "id": "SYM-5",
+    "tech": "Symfony",
+    "pattern": "SQLSTATE",
+    "explication": "Erreur SQL remontée par la base de données via Doctrine.",
+    "conseil": "Lis le code SQLSTATE dans l'erreur : 23000 = contrainte violée, 42S02 = table inexistante (lance les migrations), 1045 = mauvais identifiants BDD."
+  },
+  {
+    "id": "SYM-6",
+    "tech": "Symfony",
+    "pattern": "There are no commands defined in the .+ namespace",
+    "explication": "La commande console que tu appelles n'existe pas ou n'est pas reconnue.",
+    "conseil": "Vérifie l'orthographe avec `php bin/console list`. Le service doit être taggé ou auto-configuré dans `services.yaml`."
+  },
+  {
+    "id": "SYM-7",
+    "tech": "Symfony",
+    "pattern": "Too few arguments to function",
+    "explication": "Tu appelles une fonction/méthode sans lui passer tous les arguments qu'elle attend.",
+    "conseil": "Regarde la signature de la méthode et compte les paramètres requis (sans valeur par défaut)."
+  },
+  {
+    "id": "SYM-8",
+    "tech": "Symfony",
+    "pattern": "Service .+ not found",
+    "explication": "Symfony ne trouve pas le service demandé dans le conteneur d'injection de dépendances.",
+    "conseil": "Vérifie que la classe est dans un dossier scanné par `services.yaml`, qu'elle n'est pas abstraite, et que l'autowiring est activé."
+  },
+  {
+    "id": "SYM-9",
+    "tech": "Symfony",
+    "pattern": "Circular reference detected",
+    "explication": "Deux services s'injectent mutuellement, créant une boucle infinie.",
+    "conseil": "Utilise une injection par setter ou lazily-loaded service pour casser la dépendance circulaire."
+  },
+  {
+    "id": "SYM-10",
+    "tech": "Symfony",
+    "pattern": "Entity .+ is not managed",
+    "explication": "Tu essaies de persister ou modifier une entité Doctrine qui n'est pas gérée par l'EntityManager (souvent détachée).",
+    "conseil": "Utilise `$em->merge()` ou re-récupère l'entité via le repository avant de la modifier."
+  },
+  {
+    "id": "SYM-11",
+    "tech": "Symfony",
+    "pattern": "Unrecognized field",
+    "explication": "Tu utilises un champ dans une requête Doctrine qui n'existe pas dans l'entité.",
+    "conseil": "Vérifie le nom exact de la propriété dans ton entité (Doctrine est sensible à la casse)."
+  },
+  {
+    "id": "SYM-12",
+    "tech": "Symfony",
+    "pattern": "The form's view data is expected to be",
+    "explication": "Le type de données passé au formulaire Symfony ne correspond pas à ce qu'il attend.",
+    "conseil": "Vérifie que tu passes bien un objet entité (ou null) au `createForm()`, pas un tableau ou une string."
+  },
+  {
+    "id": "SYM-13",
+    "tech": "Symfony",
+    "pattern": "Twig_Error_Loader|Unable to find template",
+    "explication": "Symfony ne trouve pas le fichier Twig demandé.",
+    "conseil": "Vérifie le chemin du template dans `render()`. Le chemin est relatif au dossier `templates/`."
+  },
+  {
+    "id": "SYM-14",
+    "tech": "Symfony",
+    "pattern": "Access Denied|AccessDeniedException",
+    "explication": "L'utilisateur n'a pas les droits pour accéder à cette ressource (firewall ou `#[IsGranted]`).",
+    "conseil": "Vérifie tes voters, les rôles requis dans `security.yaml` ou l'annotation `#[IsGranted('ROLE_...')]`."
+  },
+  {
+    "id": "SYM-15",
+    "tech": "Symfony",
+    "pattern": "Neither the property",
+    "explication": "Tu utilises une variable ou propriété dans Twig qui n'existe pas sur l'objet passé depuis le contrôleur.",
+    "conseil": "Dans ton contrôleur, vérifie que tu passes bien la variable au render() : `return $this->render('template.html.twig', ['mavariable' => $valeur])`. Le nom dans Twig doit correspondre exactement à la clé du tableau."
+  },
+  {
+    "id": "SYM-16",
+    "tech": "Symfony",
+    "pattern": "failed to open stream: No such file or directory",
+    "explication": "PHP ne trouve pas le fichier que tu essaies d'inclure.",
+    "conseil": "Vérifie le chemin du fichier. Utilise `__DIR__` pour un chemin absolu fiable."
+  },
+  {
+    "id": "SYM-17",
+    "tech": "Symfony",
+    "pattern": "An exception has been thrown during the rendering of a template",
+    "explication": "Une exception s'est produite dans un template Twig pendant le rendu. L'erreur réelle est entre parenthèses juste après.",
+    "conseil": "Lis le message entre parenthèses — c'est lui la vraie erreur. Le fichier Twig indiqué est juste l'endroit où ça a planté."
+  },
+  {
+    "id": "SYM-18",
+    "tech": "Symfony",
+    "pattern": "must not be accessed before initialization",
+    "explication": "Tu accèdes à une propriété typée PHP avant qu'elle soit initialisée. En PHP 8+, une propriété typée sans valeur par défaut n'est pas null, elle est 'non initialisée'.",
+    "conseil": "Initialise la propriété dans le constructeur ou donne-lui une valeur par défaut. Si elle peut être nulle : `public ?MonType $propriete = null;`"
+  },
+  {
+    "id": "SYM-19",
+    "tech": "Symfony",
+    "pattern": "Expected argument of type",
+    "explication": "Tu passes un mauvais type à une méthode. PHP attend un certain type et reçoit autre chose.",
+    "conseil": "Vérifie le type attendu dans la signature de la méthode et ce que tu lui passes réellement. Souvent un null inattendu ou un tableau au lieu d'un objet."
+  },
+  {
+    "id": "SYM-20",
+    "tech": "Symfony",
+    "pattern": "There is no extension able to load the configuration for",
+    "explication": "Un bundle est référencé dans ta config mais n'est pas installé ou pas activé.",
+    "conseil": "Lance `composer require` pour installer le bundle manquant, ou supprime la config qui le référence dans `config/packages/`."
+  },
+  {
+    "id": "SYM-21",
+    "tech": "Symfony",
+    "pattern": "The option .+ does not exist",
+    "explication": "Tu passes une option inconnue à un type de formulaire Symfony.",
+    "conseil": "Vérifie les options disponibles dans la doc du FormType concerné. Utilise `configureOptions()` pour déclarer tes options personnalisées."
+  },
+  {
+    "id": "SYM-22",
+    "tech": "Symfony",
+    "pattern": "Unable to generate a URL for the named route",
+    "explication": "Tu utilises `path()` ou `url()` dans Twig avec un nom de route qui n'existe pas.",
+    "conseil": "Vérifie le nom exact avec `php bin/console debug:router`. Le nom doit correspondre exactement au `name:` de la route."
+  },
+  {
+    "id": "SYM-23",
+    "tech": "Symfony",
+    "pattern": "Doctrine\\DBAL\\Exception\\TableNotFoundException|Table .+ doesn't exist",
+    "explication": "La table SQL n'existe pas en base de données — les migrations ne sont pas jouées.",
+    "conseil": "Lance `php bin/console doctrine:migrations:migrate` ou `php bin/console doctrine:schema:update --force` en dev."
+  },
+  {
+    "id": "SYM-24",
+    "tech": "Symfony",
+    "pattern": "Authentication credentials could not be found",
+    "explication": "L'utilisateur n'est pas authentifié et tente d'accéder à une route protégée.",
+    "conseil": "Vérifie le firewall dans `security.yaml`. La route est peut-être dans une zone protégée sans être couverte par le login."
+  },
+  {
+    "id": "SYM-25",
+    "tech": "Symfony",
+    "pattern": "The security token was not found",
+    "explication": "La session de sécurité Symfony est corrompue ou expirée.",
+    "conseil": "Vide les cookies de session et reconnecte-toi. En dev, efface le dossier `var/cache/`."
+  },
+  {
+    "id": "SYM-26",
+    "tech": "Symfony",
+    "pattern": "Argument .+ passed to .+ must be an instance of",
+    "explication": "Tu passes un objet du mauvais type à une méthode qui attend un type précis.",
+    "conseil": "Vérifie ce que tu passes en argument. Souvent un null au lieu d'un objet, ou le mauvais repository injecté."
+  },
+  {
+    "id": "SYM-27",
+    "tech": "Symfony",
+    "pattern": "TranslationNotFoundException|translation key",
+    "explication": "Une clé de traduction est manquante dans tes fichiers de traduction.",
+    "conseil": "Ajoute la clé dans le bon fichier `translations/messages.fr.yaml` (ou `.xliff`). Lance `php bin/console debug:translation fr` pour voir les clés manquantes."
+  },
+  {
+    "id": "SYM-28",
+    "tech": "Symfony",
+    "pattern": "The file could not be found",
+    "explication": "Un fichier uploadé ou référencé n'existe pas au chemin indiqué.",
+    "conseil": "Vérifie le chemin de stockage dans ta config. Assure-toi que le dossier `public/uploads/` existe et est accessible en écriture."
+  }
+]

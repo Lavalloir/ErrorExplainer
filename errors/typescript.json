@@ -1,0 +1,30 @@
+[
+  {
+    "id": "TS-1",
+    "tech": "TypeScript",
+    "pattern": "Type .+ is not assignable to type",
+    "explication": "Tu assignes une valeur d'un type à une variable d'un type incompatible.",
+    "conseil": "Lis les deux types dans le message d'erreur. Soit tu casts (`as MonType`), soit tu corriges le type de ta variable ou fonction."
+  },
+  {
+    "id": "TS-2",
+    "tech": "TypeScript",
+    "pattern": "Object is possibly .undefined.|Object is possibly .null.",
+    "explication": "TypeScript détecte que ta valeur peut être null ou undefined et t'empêche de l'utiliser sans vérification.",
+    "conseil": "Utilise l'optional chaining `?.` ou un guard `if (val !== undefined)`. Évite `!` (non-null assertion) sauf si tu es vraiment sûr."
+  },
+  {
+    "id": "TS-3",
+    "tech": "TypeScript",
+    "pattern": "Property .+ does not exist on type",
+    "explication": "Tu accèdes à une propriété qui n'est pas définie dans le type/interface TypeScript.",
+    "conseil": "Ajoute la propriété à ton interface, ou vérifie que tu utilises le bon type."
+  },
+  {
+    "id": "TS-4",
+    "tech": "TypeScript",
+    "pattern": "Cannot find name",
+    "explication": "TypeScript ne connaît pas ce nom — variable non déclarée ou type manquant.",
+    "conseil": "Importe le type/la variable manquante, ou installe les types avec `npm install @types/nom-package`."
+  }
+]

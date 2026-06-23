@@ -1,0 +1,9 @@
+[
+  {
+    "id": "CSS-1",
+    "tech": "CSS",
+    "pattern": "Failed to load resource.+\\.css",
+    "explication": "Le fichier CSS n'est pas trouvé à l'URL indiquée.",
+    "conseil": "Vérifie le chemin du fichier dans le `<link>` ou l'import. En Vite/Webpack, vérifie que le fichier existe et est bien référencé."
+  }
+]

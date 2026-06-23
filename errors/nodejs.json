@@ -1,0 +1,44 @@
+[
+  {
+    "id": "NOD-1",
+    "tech": "Node.js",
+    "pattern": "Cannot find module",
+    "explication": "Node ne trouve pas le module que tu importes.",
+    "conseil": "Lance `npm install` pour installer les dépendances manquantes. Vérifie le chemin relatif si c'est un fichier local (`./` obligatoire)."
+  },
+  {
+    "id": "NOD-2",
+    "tech": "Node.js",
+    "pattern": "ENOENT: no such file or directory",
+    "explication": "Node essaie d'accéder à un fichier qui n'existe pas à ce chemin.",
+    "conseil": "Vérifie le chemin. Attention : les chemins relatifs sont relatifs au répertoire de travail (`process.cwd()`), pas au fichier courant."
+  },
+  {
+    "id": "NOD-3",
+    "tech": "Node.js",
+    "pattern": "EADDRINUSE",
+    "explication": "Le port que ton serveur essaie d'utiliser est déjà occupé par un autre processus.",
+    "conseil": "Change le port, ou tue le processus qui l'occupe : `lsof -i :3000` puis `kill -9 PID` (Mac/Linux)."
+  },
+  {
+    "id": "NOD-4",
+    "tech": "Node.js",
+    "pattern": "EACCES: permission denied",
+    "explication": "Node n'a pas les droits pour accéder au fichier ou port demandé.",
+    "conseil": "Pour les ports < 1024, il faut les droits root. Pour les fichiers, vérifie les permissions avec `ls -la`."
+  },
+  {
+    "id": "NOD-5",
+    "tech": "Node.js",
+    "pattern": "MODULE_NOT_FOUND",
+    "explication": "Même chose que 'Cannot find module' — le module est introuvable.",
+    "conseil": "`npm install`, puis vérifie que le nom du package dans `require()` correspond exactement à celui dans `package.json`."
+  },
+  {
+    "id": "NOD-6",
+    "tech": "Node.js",
+    "pattern": "Error: listen EADDRINUSE",
+    "explication": "Le port est déjà utilisé par un processus existant.",
+    "conseil": "Trouve et tue le processus : `npx kill-port 3000` ou `lsof -ti:3000 | xargs kill -9`."
+  }
+]

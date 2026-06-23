@@ -1,0 +1,191 @@
+[
+  {
+    "id": "CSH-1",
+    "tech": "C#",
+    "pattern": "NullReferenceException",
+    "explication": "Tu essaies d'accéder à un membre d'un objet qui vaut `null`. C'est l'erreur la plus fréquente en C#.",
+    "conseil": "Utilise l'opérateur `?.` (null-conditional) : `monObjet?.Propriete`. En .NET 6+, active les nullable reference types pour les détecter à la compilation."
+  },
+  {
+    "id": "CSH-2",
+    "tech": "C#",
+    "pattern": "Sequence contains no elements",
+    "explication": "Tu utilises `.First()` ou `.Single()` sur une collection vide — LINQ ne trouve aucun élément.",
+    "conseil": "Remplace `.First()` par `.FirstOrDefault()` qui retourne `null` au lieu de planter, puis vérifie si le résultat est null."
+  },
+  {
+    "id": "CSH-3",
+    "tech": "C#",
+    "pattern": "Sequence contains more than one element",
+    "explication": "Tu utilises `.Single()` mais la requête retourne plusieurs résultats.",
+    "conseil": "Utilise `.First()` si tu veux juste le premier, ou affine ton filtre `.Where()` pour n'obtenir qu'un seul résultat."
+  },
+  {
+    "id": "CSH-4",
+    "tech": "C#",
+    "pattern": "IndexOutOfRangeException",
+    "explication": "Tu accèdes à un index qui n'existe pas dans un tableau ou une liste.",
+    "conseil": "Vérifie que l'index est bien inférieur à `.Length` (tableau) ou `.Count` (liste) avant d'y accéder."
+  },
+  {
+    "id": "CSH-5",
+    "tech": "C#",
+    "pattern": "InvalidCastException",
+    "explication": "Tu essaies de convertir un objet vers un type incompatible.",
+    "conseil": "Utilise `as` au lieu d'un cast direct : `var x = obj as MonType;` puis vérifie si `x != null`. Ou utilise `is` pour tester le type avant."
+  },
+  {
+    "id": "CSH-6",
+    "tech": "C#",
+    "pattern": "StackOverflowException",
+    "explication": "Récursion infinie — une méthode s'appelle elle-même sans condition de sortie.",
+    "conseil": "Vérifie tes méthodes récursives et assure-toi que la condition d'arrêt est bien atteinte. Attention aux propriétés qui s'appellent elles-mêmes."
+  },
+  {
+    "id": "CSH-7",
+    "tech": "C#",
+    "pattern": "DbUpdateException|DbUpdateConcurrencyException",
+    "explication": "Entity Framework n'a pas pu sauvegarder en base de données.",
+    "conseil": "Regarde l'`InnerException` — c'est elle qui contient la vraie cause (contrainte SQL, colonne null, doublon). `ex.InnerException?.Message` dans le catch."
+  },
+  {
+    "id": "CSH-8",
+    "tech": "C#",
+    "pattern": "Cannot insert explicit value for identity column",
+    "explication": "Tu essaies d'insérer manuellement une valeur dans une colonne auto-incrémentée sans l'avoir autorisé.",
+    "conseil": "Soit retire l'assignation de l'ID avant le `SaveChanges()`, soit active `IDENTITY_INSERT` si tu as vraiment besoin d'imposer un ID."
+  },
+  {
+    "id": "CSH-9",
+    "tech": "C#",
+    "pattern": "ObjectDisposedException",
+    "explication": "Tu utilises un objet qui a déjà été détruit (`Dispose()` appelé), souvent un DbContext ou un Stream.",
+    "conseil": "Vérifie que tu n'utilises pas un DbContext après la fin d'un `using`. En ASP.NET Core, ne stocke pas le DbContext dans un singleton."
+  },
+  {
+    "id": "CSH-10",
+    "tech": "C#",
+    "pattern": "A second operation was started on this context",
+    "explication": "Tu fais deux requêtes EF Core en parallèle sur le même DbContext — il n'est pas thread-safe.",
+    "conseil": "Utilise `await` sur chaque requête pour les rendre séquentielles, ou crée un DbContext séparé par opération parallèle."
+  },
+  {
+    "id": "CSH-11",
+    "tech": "C#",
+    "pattern": "is not part of the model",
+    "explication": "Entity Framework ne connaît pas cette entité — elle n'est pas enregistrée dans le DbContext.",
+    "conseil": "Ajoute un `DbSet<MonEntite>` dans ton DbContext, puis lance une nouvelle migration."
+  },
+  {
+    "id": "CSH-12",
+    "tech": "C#",
+    "pattern": "No database provider has been configured",
+    "explication": "EF Core ne sait pas quelle base de données utiliser — le provider n'est pas configuré.",
+    "conseil": "Dans `Program.cs`, ajoute `builder.Services.AddDbContext<MonContext>(opt => opt.UseSqlServer(...))` ou `UseMySql`, `UseSqlite` selon ta BDD."
+  },
+  {
+    "id": "CSH-13",
+    "tech": "C#",
+    "pattern": "Unable to resolve service for type",
+    "explication": "L'injection de dépendances ASP.NET Core ne trouve pas le service demandé dans le conteneur IoC.",
+    "conseil": "Enregistre le service dans `Program.cs` : `builder.Services.AddScoped<IMonService, MonService>()`. Vérifie que l'interface et l'implémentation correspondent."
+  },
+  {
+    "id": "CSH-14",
+    "tech": "C#",
+    "pattern": "Lifetime of the service",
+    "explication": "Tu injectes un service Scoped dans un Singleton — le Scoped sera détruit avant le Singleton.",
+    "conseil": "Un Singleton ne peut contenir que des Singleton ou Transient. Change le lifetime ou utilise `IServiceScopeFactory`."
+  },
+  {
+    "id": "CSH-15",
+    "tech": "C#",
+    "pattern": "FormatException",
+    "explication": "Tu essaies de convertir une string dans un format qui ne correspond pas (ex: `int.Parse(\"abc\")`).",
+    "conseil": "Utilise `int.TryParse()` au lieu de `int.Parse()` — il retourne `false` sans planter si la conversion échoue."
+  },
+  {
+    "id": "CSH-16",
+    "tech": "C#",
+    "pattern": "Deadlock detected|Transaction was deadlocked",
+    "explication": "Deux transactions SQL s'attendent mutuellement et aucune ne peut continuer.",
+    "conseil": "Accède toujours aux tables dans le même ordre dans toutes tes transactions. Garde les transactions courtes."
+  },
+  {
+    "id": "CSH-17",
+    "tech": "C#",
+    "pattern": "JsonException|JSON deserialization",
+    "explication": "La désérialisation JSON a échoué — le JSON reçu ne correspond pas au type C# attendu.",
+    "conseil": "Vérifie que les noms de propriétés correspondent (attention à la casse). Affiche le JSON brut avant de désérialiser pour voir ce qui cloche."
+  },
+  {
+    "id": "CSH-18",
+    "tech": "C#",
+    "pattern": "The migration .+ has already been applied",
+    "explication": "Tu essaies d'appliquer une migration EF Core qui est déjà en base.",
+    "conseil": "Lance `dotnet ef migrations list` pour voir l'état. En dev : `dotnet ef database drop` puis `dotnet ef database update`."
+  },
+  {
+    "id": "CSH-19",
+    "tech": "C#",
+    "pattern": "KeyNotFoundException",
+    "explication": "Tu accèdes à une clé d'un Dictionary qui n'existe pas.",
+    "conseil": "Utilise `TryGetValue` : `if (dict.TryGetValue(clé, out var val)) { ... }` au lieu de `dict[clé]` directement."
+  },
+  {
+    "id": "CSH-20",
+    "tech": "C#",
+    "pattern": "OverflowException",
+    "explication": "Une valeur numérique dépasse la capacité du type (ex: int dépassant 2 147 483 647).",
+    "conseil": "Utilise un type plus grand (`long`, `decimal`) ou entoure le calcul dans `checked { }` pour détecter l'overflow explicitement."
+  },
+  {
+    "id": "CSH-21",
+    "tech": "C#",
+    "pattern": "NotImplementedException",
+    "explication": "Tu appelles une méthode qui n'a pas encore été implémentée (souvent générée automatiquement par Visual Studio).",
+    "conseil": "Implémente le corps de la méthode. Cherche `throw new NotImplementedException()` dans ton code et remplace-le par la vraie logique."
+  },
+  {
+    "id": "CSH-22",
+    "tech": "C#",
+    "pattern": "ArgumentNullException",
+    "explication": "Tu passes `null` à un paramètre qui ne l'accepte pas.",
+    "conseil": "Vérifie ce que tu passes en argument. Ajoute une vérification en début de méthode : `ArgumentNullException.ThrowIfNull(parametre);`"
+  },
+  {
+    "id": "CSH-23",
+    "tech": "C#",
+    "pattern": "ArgumentOutOfRangeException",
+    "explication": "Tu passes une valeur hors de la plage acceptable pour ce paramètre.",
+    "conseil": "Lis le message d'erreur qui indique la valeur et la plage attendue. Vérifie tes index, tailles et valeurs numériques."
+  },
+  {
+    "id": "CSH-24",
+    "tech": "C#",
+    "pattern": "InvalidOperationException",
+    "explication": "Une opération est invalide dans l'état actuel de l'objet.",
+    "conseil": "Lis le message détaillé — il explique pourquoi l'opération est impossible dans cet état. Souvent un DbContext déjà utilisé ou une collection modifiée pendant l'itération."
+  },
+  {
+    "id": "CSH-25",
+    "tech": "C#",
+    "pattern": "Cannot convert type .+ to",
+    "explication": "Tu essaies de convertir implicitement un type vers un autre incompatible.",
+    "conseil": "Ajoute un cast explicite `(MonType)valeur` ou utilise une méthode de conversion appropriée comme `.ToString()`, `Convert.ToInt32()`, etc."
+  },
+  {
+    "id": "CSH-26",
+    "tech": "C#",
+    "pattern": "The name .+ does not exist in the current context",
+    "explication": "Tu utilises un identifiant (variable, méthode, classe) qui n'existe pas dans ce scope.",
+    "conseil": "Vérifie l'orthographe, les `using` manquants en haut du fichier, ou si la variable est déclarée dans un autre scope."
+  },
+  {
+    "id": "CSH-27",
+    "tech": "C#",
+    "pattern": "CS0103|CS0246|CS1061",
+    "explication": "Erreur de compilation C# — identifiant inconnu, type introuvable ou membre inexistant.",
+    "conseil": "Lis le message après le code d'erreur. CS0103 = variable inconnue, CS0246 = type/namespace introuvable (ajoute le `using`), CS1061 = méthode/propriété inexistante sur ce type."
+  }
+]

@@ -1,0 +1,128 @@
+[
+  {
+    "id": "REA-1",
+    "tech": "React",
+    "pattern": "Cannot read propert.+ of undefined",
+    "explication": "Tu essaies d'accéder à une propriété d'une variable qui vaut `undefined`. Souvent les données ne sont pas encore chargées.",
+    "conseil": "Ajoute une vérification : `{data && data.propriete}` ou utilise l'optional chaining : `data?.propriete`."
+  },
+  {
+    "id": "REA-2",
+    "tech": "React",
+    "pattern": "Cannot read propert.+ of null",
+    "explication": "Même chose que undefined mais la variable vaut explicitement `null`.",
+    "conseil": "Utilise `data?.propriete ?? 'valeur par défaut'` ou vérifie l'état initial de ton state/prop."
+  },
+  {
+    "id": "REA-3",
+    "tech": "React",
+    "pattern": "Each child in a list should have a unique",
+    "explication": "React a besoin d'un `key` unique sur chaque élément d'une liste pour optimiser le rendu.",
+    "conseil": "Ajoute `key={item.id}` sur l'élément racine dans ton `.map()`. N'utilise pas l'index si la liste peut changer d'ordre."
+  },
+  {
+    "id": "REA-4",
+    "tech": "React",
+    "pattern": "Too many re-renders",
+    "explication": "Ton composant se re-rend en boucle infinie. Un setState est probablement appelé directement dans le render.",
+    "conseil": "Ne mets pas de `setState` directement dans le corps du composant. Utilise `useEffect` avec des dépendances correctes."
+  },
+  {
+    "id": "REA-5",
+    "tech": "React",
+    "pattern": "Invalid hook call",
+    "explication": "Tu appelles un hook en dehors d'un composant fonctionnel, ou tu as deux versions de React chargées.",
+    "conseil": "Les hooks ne peuvent être appelés que dans des composants React ou d'autres hooks. Vérifie aussi que React n'est pas en double dans node_modules."
+  },
+  {
+    "id": "REA-6",
+    "tech": "React",
+    "pattern": "not wrapped in act",
+    "explication": "Dans tes tests, une mise à jour de state se fait en dehors d'un `act()`.",
+    "conseil": "Entoure les actions asynchrones dans tes tests avec `await act(async () => { ... })`."
+  },
+  {
+    "id": "REA-7",
+    "tech": "React",
+    "pattern": "does not recognize the .+ prop on a DOM element",
+    "explication": "Tu passes une prop personnalisée directement à un élément HTML natif.",
+    "conseil": "Renomme ta prop avec un préfixe `data-` ou filtre-la avant de la passer à l'élément HTML."
+  },
+  {
+    "id": "REA-8",
+    "tech": "React",
+    "pattern": "Nothing was returned from render",
+    "explication": "Ton composant ne retourne rien (ou `undefined`).",
+    "conseil": "Assure-toi que ton composant retourne bien du JSX, même `null` si tu ne veux rien afficher."
+  },
+  {
+    "id": "REA-9",
+    "tech": "React",
+    "pattern": "Encountered two children with the same key",
+    "explication": "Deux éléments dans une liste ont le même `key`, ce qui perturbe React.",
+    "conseil": "Assure-toi que les IDs que tu utilises comme key sont vraiment uniques dans la liste."
+  },
+  {
+    "id": "REA-10",
+    "tech": "React",
+    "pattern": "PropTypes",
+    "explication": "Une prop reçoit un type différent de celui attendu.",
+    "conseil": "Vérifie ce que tu passes au composant. Si tu utilises TypeScript, corrige le type de la prop."
+  },
+  {
+    "id": "REA-11",
+    "tech": "React",
+    "pattern": "Can't perform a React state update on an unmounted component",
+    "explication": "Tu mets à jour le state d'un composant qui a déjà été démonté (souvent après un appel async).",
+    "conseil": "Dans ton `useEffect`, utilise une variable `isMounted` et vérifie-la avant le `setState`. Ou utilise un AbortController pour annuler le fetch."
+  },
+  {
+    "id": "REA-12",
+    "tech": "React",
+    "pattern": "Hydration failed|hydration error",
+    "explication": "Le HTML généré côté serveur (SSR) ne correspond pas à ce que React génère côté client.",
+    "conseil": "Vérifie les conditions qui rendraient différemment en SSR vs client (dates, `window`, `localStorage`). Entoure ces parties dans un `useEffect`."
+  },
+  {
+    "id": "REA-13",
+    "tech": "React",
+    "pattern": "Element type is invalid",
+    "explication": "Tu essaies de rendre un composant qui est `undefined` ou `null` — souvent un import raté.",
+    "conseil": "Vérifie ton import : `import MonComposant from './MonComposant'` (default export) vs `import { MonComposant } from './MonComposant'` (named export)."
+  },
+  {
+    "id": "REA-14",
+    "tech": "React",
+    "pattern": "Objects are not valid as a React child",
+    "explication": "Tu essaies d'afficher un objet directement dans le JSX — React ne sait pas comment le rendre.",
+    "conseil": "Accède à une propriété spécifique de l'objet : `{monObjet.nom}` au lieu de `{monObjet}`. Ou utilise `JSON.stringify(monObjet)` pour le debug."
+  },
+  {
+    "id": "REA-15",
+    "tech": "React",
+    "pattern": "Maximum update depth exceeded",
+    "explication": "Boucle infinie de renders — un useEffect met à jour un state qui redéclenche le useEffect.",
+    "conseil": "Vérifie le tableau de dépendances de ton `useEffect`. Si tu mets à jour un state qui est dans les dépendances, tu crées une boucle. Ajoute une condition ou retire la dépendance."
+  },
+  {
+    "id": "REA-16",
+    "tech": "React",
+    "pattern": "Cannot update a component .+ while rendering a different component",
+    "explication": "Un composant met à jour le state d'un autre composant pendant la phase de rendu.",
+    "conseil": "Déplace la mise à jour du state dans un `useEffect` ou dans un gestionnaire d'événement, pas directement dans le corps du composant."
+  },
+  {
+    "id": "REA-17",
+    "tech": "React",
+    "pattern": "useRef",
+    "explication": "Mauvaise utilisation de `useRef` — tu accèdes à `.current` avant que le composant soit monté, ou tu l'utilises comme un state.",
+    "conseil": "Accède à `ref.current` uniquement dans un `useEffect` ou dans un gestionnaire d'événement, jamais directement dans le render."
+  },
+  {
+    "id": "REA-18",
+    "tech": "React",
+    "pattern": "React.Children.only expected to receive a single React element child",
+    "explication": "Un composant qui n'accepte qu'un seul enfant en a reçu plusieurs.",
+    "conseil": "Entoure tes éléments dans une `<div>` ou un Fragment `<>...</>` pour n'avoir qu'un seul enfant."
+  }
+]

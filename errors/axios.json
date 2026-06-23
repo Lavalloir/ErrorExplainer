@@ -1,0 +1,65 @@
+[
+  {
+    "id": "AXI-1",
+    "tech": "Axios",
+    "pattern": "AxiosError|axios.+error",
+    "explication": "Une requête Axios a échoué. La cause peut être réseau, CORS, timeout, ou une réponse HTTP d'erreur (4xx/5xx).",
+    "conseil": "Inspecte `error.response?.status` pour le code HTTP, `error.response?.data` pour le message serveur, et `error.request` si la requête n'a jamais reçu de réponse."
+  },
+  {
+    "id": "AXI-2",
+    "tech": "Axios",
+    "pattern": "Network Error",
+    "explication": "Axios n'a pas pu joindre le serveur — problème réseau, serveur éteint, ou CORS qui bloque la requête avant qu'elle parte.",
+    "conseil": "Vérifie que ton serveur tourne. Si c'est du CORS, regarde la console : il y aura un message CORS séparé. Vérifie aussi que l'URL de base est correcte dans `axios.create({ baseURL: ... })`."
+  },
+  {
+    "id": "AXI-3",
+    "tech": "Axios",
+    "pattern": "timeout of .+ exceeded|ECONNABORTED",
+    "explication": "La requête a dépassé le délai maximum configuré dans Axios.",
+    "conseil": "Augmente le timeout : `axios.create({ timeout: 10000 })`. Ou optimise l'endpoint côté serveur s'il est trop lent."
+  },
+  {
+    "id": "AXI-4",
+    "tech": "Axios",
+    "pattern": "Request failed with status code 401",
+    "explication": "Le serveur refuse la requête car le token d'authentification est absent ou expiré.",
+    "conseil": "Vérifie que tu envoies bien le header : `axios.defaults.headers.common['Authorization'] = 'Bearer ' + token`. Si le token est expiré, rafraîchis-le via un interceptor Axios."
+  },
+  {
+    "id": "AXI-5",
+    "tech": "Axios",
+    "pattern": "Request failed with status code 403",
+    "explication": "Authentifié mais pas autorisé — ton compte n'a pas les droits pour cette ressource.",
+    "conseil": "C'est un problème de rôles/permissions côté serveur. Vérifie que l'utilisateur connecté a bien le bon rôle pour cet endpoint."
+  },
+  {
+    "id": "AXI-6",
+    "tech": "Axios",
+    "pattern": "Request failed with status code 404",
+    "explication": "L'URL que tu appelles n'existe pas côté serveur.",
+    "conseil": "Vérifie la `baseURL` et le chemin de la requête. Teste l'URL directement dans Postman ou le navigateur."
+  },
+  {
+    "id": "AXI-7",
+    "tech": "Axios",
+    "pattern": "Request failed with status code 422",
+    "explication": "Le serveur a reçu la requête mais les données ne passent pas la validation.",
+    "conseil": "Regarde `error.response.data` — il contient les détails des champs invalides. Corrige les données envoyées dans le corps de la requête."
+  },
+  {
+    "id": "AXI-8",
+    "tech": "Axios",
+    "pattern": "Request failed with status code 500",
+    "explication": "Erreur interne du serveur — une exception non gérée a planté l'API.",
+    "conseil": "Le bug est côté serveur. Regarde les logs du serveur (pas la réponse Axios). `error.response.data` peut parfois contenir un message utile en mode dev."
+  },
+  {
+    "id": "AXI-9",
+    "tech": "Axios",
+    "pattern": "Cannot set headers after they are sent|CORS.+axios",
+    "explication": "Problème CORS sur une requête Axios — le serveur n'autorise pas ton origine.",
+    "conseil": "Configure CORS côté serveur, pas dans Axios. En Express : `app.use(cors())`. En Laravel : `config/cors.php`. En Symfony : `nelmio/cors-bundle`."
+  }
+]

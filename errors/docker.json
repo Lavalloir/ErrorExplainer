@@ -1,0 +1,121 @@
+[
+  {
+    "id": "DOK-1",
+    "tech": "Docker",
+    "pattern": "Cannot connect to the Docker daemon",
+    "explication": "Docker Desktop n'est pas lancé ou le daemon Docker ne tourne pas.",
+    "conseil": "Lance Docker Desktop. Sur Linux : `sudo systemctl start docker`. Vérifie avec `docker info`."
+  },
+  {
+    "id": "DOK-2",
+    "tech": "Docker",
+    "pattern": "port is already allocated|address already in use",
+    "explication": "Le port que tu veux exposer est déjà utilisé sur ta machine hôte.",
+    "conseil": "Change le port hôte dans ton `docker-compose.yml` : `\"8081:80\"` au lieu de `\"8080:80\"`. Ou stoppe le processus qui occupe le port."
+  },
+  {
+    "id": "DOK-3",
+    "tech": "Docker",
+    "pattern": "unable to prepare context|No such file or directory.*Dockerfile",
+    "explication": "Docker ne trouve pas le Dockerfile dans le répertoire indiqué.",
+    "conseil": "Vérifie que tu lances `docker build` depuis le bon dossier, ou précise le chemin avec `-f chemin/Dockerfile`."
+  },
+  {
+    "id": "DOK-4",
+    "tech": "Docker",
+    "pattern": "pull access denied|repository does not exist|image .+ not found",
+    "explication": "L'image Docker demandée n'existe pas sur Docker Hub ou le registry configuré.",
+    "conseil": "Vérifie le nom et le tag de l'image : `nom:tag`. Lance `docker pull nom:tag` séparément. Vérifie que tu es connecté si c'est une image privée."
+  },
+  {
+    "id": "DOK-5",
+    "tech": "Docker",
+    "pattern": "executable file not found|OCI runtime exec failed",
+    "explication": "La commande que tu essaies d'exécuter dans le container n'existe pas dans l'image.",
+    "conseil": "Vérifie que le binaire est bien installé dans l'image. Utilise `docker exec -it container bash` pour explorer l'image."
+  },
+  {
+    "id": "DOK-6",
+    "tech": "Docker",
+    "pattern": "no space left on device",
+    "explication": "Docker a rempli le disque — images, containers et volumes inutilisés s'accumulent.",
+    "conseil": "Lance `docker system prune -a` pour tout nettoyer. Attention : supprime aussi les images valides non utilisées."
+  },
+  {
+    "id": "DOK-7",
+    "tech": "Docker",
+    "pattern": "network .+ not found",
+    "explication": "Le réseau Docker référencé dans ta config n'existe pas.",
+    "conseil": "Crée le réseau manuellement `docker network create mon-reseau`, ou vérifie que le nom dans `docker-compose.yml` correspond à un réseau déclaré dans `networks:`."
+  },
+  {
+    "id": "DOK-8",
+    "tech": "Docker",
+    "pattern": "container is unhealthy|unhealthy",
+    "explication": "Le healthcheck du container échoue — l'application à l'intérieur ne répond pas correctement.",
+    "conseil": "Regarde les logs du container : `docker logs nom-container`. Vérifie que l'app démarre bien et que le endpoint de healthcheck répond."
+  },
+  {
+    "id": "DOK-9",
+    "tech": "Docker",
+    "pattern": "exited with code 1|Exit 1",
+    "explication": "Le container s'est arrêté avec une erreur — l'application à l'intérieur a planté au démarrage.",
+    "conseil": "Regarde les logs immédiatement : `docker logs nom-container`. L'erreur réelle est dans ces logs."
+  },
+  {
+    "id": "DOK-10",
+    "tech": "Docker",
+    "pattern": "permission denied.*docker|bind mount.*denied",
+    "explication": "Docker n'a pas les permissions pour monter le dossier indiqué en volume.",
+    "conseil": "Sur Linux, vérifie les permissions du dossier hôte. Sur Mac/Windows, vérifie les ressources partagées dans les paramètres Docker Desktop."
+  },
+  {
+    "id": "DOK-11",
+    "tech": "Docker",
+    "pattern": "Service .+ failed to build|failed to solve",
+    "explication": "La construction de l'image Docker a échoué.",
+    "conseil": "Remonte dans les logs du build pour trouver la ligne `RUN` qui a planté. Lance `docker build --no-cache` pour forcer une reconstruction propre."
+  },
+  {
+    "id": "DOK-12",
+    "tech": "Docker",
+    "pattern": "depends_on|dependency failed to start",
+    "explication": "Un service Docker Compose démarre avant que son dépendance soit prête.",
+    "conseil": "Ajoute `condition: service_healthy` dans `depends_on` et configure un `healthcheck` sur le service dépendant."
+  },
+  {
+    "id": "DOK-13",
+    "tech": "Docker",
+    "pattern": "COPY failed|no such file or directory.*COPY",
+    "explication": "Le fichier ou dossier que tu essaies de copier dans l'image n'existe pas dans le contexte de build.",
+    "conseil": "Vérifie que le fichier existe dans le dossier de build et qu'il n'est pas exclu par `.dockerignore`."
+  },
+  {
+    "id": "DOK-14",
+    "tech": "Docker",
+    "pattern": "Error response from daemon: conflict",
+    "explication": "Tu essaies de créer un container ou une image avec un nom qui existe déjà.",
+    "conseil": "Supprime l'ancien container : `docker rm nom-container`. Ou utilise `docker-compose down` avant de relancer."
+  },
+  {
+    "id": "DOK-15",
+    "tech": "Docker",
+    "pattern": "standard_init_linux.go|exec format error",
+    "explication": "L'image a été buildée pour une architecture différente (ex: ARM vs AMD64).",
+    "conseil": "Rebuild l'image sur la même architecture que le serveur cible, ou utilise `--platform linux/amd64` dans ton Dockerfile."
+  },
+  {
+    "id": "DOK-16",
+    "tech": "Docker",
+    "pattern": "Error: No such container",
+    "explication": "Tu essaies d'interagir avec un container qui n'existe pas ou qui a été supprimé.",
+    "conseil": "Liste les containers actifs avec `docker ps` et tous les containers avec `docker ps -a`. Vérifie le nom exact."
+  },
+  {
+    "id": "DOK-17",
+    "tech": "Docker",
+    "pattern": "version .+ is not supported|unsupported Compose file version",
+    "explication": "La version de Docker Compose sur ta machine ne supporte pas la version déclarée dans ton fichier.",
+    "conseil": "Mets à jour Docker Desktop, ou baisse la version dans `docker-compose.yml` : `version: '3.8'`."
+  }
+]

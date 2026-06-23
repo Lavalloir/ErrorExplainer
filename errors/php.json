@@ -1,0 +1,149 @@
+[
+  {
+    "id": "PHP-1",
+    "tech": "PHP",
+    "pattern": "Call to undefined function",
+    "explication": "Tu appelles une fonction qui n'existe pas. Vérifie l'orthographe, ou que l'extension PHP requise est bien activée.",
+    "conseil": "Regarde si tu as oublié un `use` ou un `require`, ou si la fonction vient d'une lib non installée."
+  },
+  {
+    "id": "PHP-2",
+    "tech": "PHP",
+    "pattern": "Call to a member function .+ on null",
+    "explication": "Tu essaies d'appeler une méthode sur une variable qui vaut `null`. L'objet n'a pas été initialisé ou la requête n'a rien retourné.",
+    "conseil": "Ajoute un `if ($objet !== null)` avant d'appeler la méthode, ou vérifie pourquoi ta requête retourne null."
+  },
+  {
+    "id": "PHP-3",
+    "tech": "PHP",
+    "pattern": "Undefined variable",
+    "explication": "Tu utilises une variable qui n'a jamais été définie dans ce scope.",
+    "conseil": "Vérifie que tu as bien assigné la variable avant de l'utiliser, ou qu'elle n'est pas dans un bloc conditionnel que tu crois toujours exécuté."
+  },
+  {
+    "id": "PHP-4",
+    "tech": "PHP",
+    "pattern": "Undefined index",
+    "explication": "Tu accèdes à une clé de tableau qui n'existe pas.",
+    "conseil": "Utilise `isset($array['clé'])` ou `$array['clé'] ?? null` pour éviter l'erreur."
+  },
+  {
+    "id": "PHP-5",
+    "tech": "PHP",
+    "pattern": "Parse error: syntax error",
+    "explication": "Erreur de syntaxe PHP — un caractère manquant ou mal placé empêche l'interprétation du fichier.",
+    "conseil": "Regarde la ligne indiquée : point-virgule oublié, accolade non fermée, virgule en trop dans un tableau."
+  },
+  {
+    "id": "PHP-6",
+    "tech": "PHP",
+    "pattern": "Maximum execution time",
+    "explication": "Ton script a dépassé le temps maximum d'exécution (souvent 30s). Tu as probablement une boucle infinie ou une requête trop lente.",
+    "conseil": "Cherche une boucle `while` ou `for` dont la condition ne devient jamais fausse, ou optimise ta requête SQL."
+  },
+  {
+    "id": "PHP-7",
+    "tech": "PHP",
+    "pattern": "Allowed memory size",
+    "explication": "PHP a manqué de mémoire. Tu charges probablement un fichier ou un tableau trop volumineux d'un coup.",
+    "conseil": "Traite les données par batch, ou augmente temporairement `memory_limit` dans php.ini."
+  },
+  {
+    "id": "PHP-8",
+    "tech": "PHP",
+    "pattern": "Class .+ not found",
+    "explication": "PHP ne trouve pas la classe demandée. L'autoload ne la trouve pas.",
+    "conseil": "Lance `composer dump-autoload`, vérifie le namespace et le nom du fichier (ils doivent correspondre exactement)."
+  },
+  {
+    "id": "PHP-9",
+    "tech": "PHP",
+    "pattern": "Cannot redeclare",
+    "explication": "Tu déclares une fonction ou classe qui existe déjà (souvent à cause d'un double `include`).",
+    "conseil": "Remplace `require` par `require_once` ou `include` par `include_once`."
+  },
+  {
+    "id": "PHP-10",
+    "tech": "PHP",
+    "pattern": "headers already sent",
+    "explication": "Du contenu HTML (ou même un espace) a été envoyé avant un `header()` ou `setcookie()`.",
+    "conseil": "Vérifie qu'il n'y a aucun espace/saut de ligne avant `<?php` dans tes fichiers, et qu'aucun `echo` ne précède le `header()`."
+  },
+  {
+    "id": "PHP-11",
+    "tech": "PHP",
+    "pattern": "Fatal error: Uncaught Error",
+    "explication": "Une erreur fatale non rattrapée a planté l'exécution du script PHP.",
+    "conseil": "Lis le détail après 'Uncaught Error:' — c'est l'erreur réelle. Active le mode debug pour voir la stack trace complète."
+  },
+  {
+    "id": "PHP-12",
+    "tech": "PHP",
+    "pattern": "Typed property .+ must not be accessed before initialization",
+    "explication": "Tu accèdes à une propriété typée PHP 8 avant qu'elle soit initialisée. Elle n'est pas null, elle est dans un état 'uninitialized'.",
+    "conseil": "Initialise la propriété dans le constructeur ou donne-lui une valeur par défaut. Si nullable : `public ?MonType $prop = null;`"
+  },
+  {
+    "id": "PHP-13",
+    "tech": "PHP",
+    "pattern": "Cannot use object of type .+ as array",
+    "explication": "Tu utilises la syntaxe `[]` sur un objet qui n'implémente pas ArrayAccess.",
+    "conseil": "Utilise les méthodes de l'objet à la place, ou vérifie que tu n'as pas confondu un objet et un tableau dans ta variable."
+  },
+  {
+    "id": "PHP-14",
+    "tech": "PHP",
+    "pattern": "Division by zero",
+    "explication": "Tu divises par zéro.",
+    "conseil": "Ajoute une vérification avant la division : `if ($diviseur != 0) { ... }`."
+  },
+  {
+    "id": "PHP-15",
+    "tech": "PHP",
+    "pattern": "Cannot modify header information",
+    "explication": "Tu essaies d'envoyer un header HTTP alors que du contenu a déjà été envoyé au navigateur.",
+    "conseil": "Même cause que 'headers already sent' — vérifie les espaces avant `<?php` et les `echo` avant les redirections."
+  },
+  {
+    "id": "PHP-16",
+    "tech": "PHP",
+    "pattern": "Undefined constant",
+    "explication": "Tu utilises une constante qui n'a pas été définie.",
+    "conseil": "Définis la constante avec `define('MA_CONSTANTE', valeur)` ou `const MA_CONSTANTE = valeur` dans une classe."
+  },
+  {
+    "id": "PHP-17",
+    "tech": "PHP",
+    "pattern": "Cannot access private property",
+    "explication": "Tu essaies d'accéder à une propriété privée depuis l'extérieur de la classe.",
+    "conseil": "Utilise un getter public, ou change la visibilité en `protected` ou `public` si c'est intentionnel."
+  },
+  {
+    "id": "PHP-18",
+    "tech": "PHP",
+    "pattern": "Interface .+ not found|Trait .+ not found",
+    "explication": "PHP ne trouve pas l'interface ou le trait utilisé.",
+    "conseil": "Vérifie le namespace et l'import (`use`). Lance `composer dump-autoload`."
+  },
+  {
+    "id": "PHP-19",
+    "tech": "PHP",
+    "pattern": "Array to string conversion",
+    "explication": "Tu essaies d'utiliser un tableau comme une chaîne de caractères (dans un `echo` ou une concaténation par exemple).",
+    "conseil": "Utilise `implode(',', $array)` ou `print_r($array)` pour afficher un tableau, ou accède à un élément spécifique : `$array[0]`."
+  },
+  {
+    "id": "PHP-20",
+    "tech": "PHP",
+    "pattern": "PDOException|could not find driver",
+    "explication": "PHP ne peut pas se connecter à la base de données — driver manquant ou identifiants incorrects.",
+    "conseil": "Vérifie que l'extension PDO est activée dans php.ini (`extension=pdo_mysql`). Vérifie aussi les identifiants de connexion."
+  },
+  {
+    "id": "PHP-21",
+    "tech": "PHP",
+    "pattern": "Invalid argument supplied for foreach",
+    "explication": "Tu utilises `foreach` sur une variable qui n'est pas un tableau ou un objet itérable.",
+    "conseil": "Vérifie que la variable est bien un tableau avant : `if (is_array($var)) { foreach... }`. Elle est peut-être null ou false."
+  }
+]

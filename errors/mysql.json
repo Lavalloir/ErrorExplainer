@@ -1,0 +1,37 @@
+[
+  {
+    "id": "MYS-1",
+    "tech": "MySQL",
+    "pattern": "Table .+ doesn't exist",
+    "explication": "La table SQL que tu interroges n'existe pas dans la base de données.",
+    "conseil": "Lance tes migrations (`php artisan migrate` ou `php bin/console doctrine:migrations:migrate`). Vérifie que tu es sur la bonne BDD."
+  },
+  {
+    "id": "MYS-2",
+    "tech": "MySQL",
+    "pattern": "Duplicate entry",
+    "explication": "Tu insères une valeur qui existe déjà sur un champ avec contrainte UNIQUE.",
+    "conseil": "Utilise `INSERT ... ON DUPLICATE KEY UPDATE` ou vérifie l'existence avant d'insérer."
+  },
+  {
+    "id": "MYS-3",
+    "tech": "MySQL",
+    "pattern": "Cannot add or update a child row: a foreign key constraint",
+    "explication": "Tu essaies d'insérer/modifier un enregistrement avec une clé étrangère qui ne correspond à aucun enregistrement parent.",
+    "conseil": "Assure-toi que l'enregistrement parent existe avant d'insérer l'enfant. Vérifie l'ordre d'insertion."
+  },
+  {
+    "id": "MYS-4",
+    "tech": "MySQL",
+    "pattern": "Access denied for user",
+    "explication": "L'utilisateur MySQL n'a pas les droits sur cette base de données.",
+    "conseil": "Vérifie les credentials dans ton `.env`. Si c'est en local, vérifie les permissions dans phpMyAdmin ou avec `GRANT ALL`."
+  },
+  {
+    "id": "MYS-5",
+    "tech": "MySQL",
+    "pattern": "Data too long for column",
+    "explication": "Tu essaies d'insérer une valeur trop longue pour la colonne (VARCHAR(255) par exemple).",
+    "conseil": "Augmente la taille de la colonne en migration, ou tronque la valeur avant insertion."
+  }
+]

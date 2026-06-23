@@ -1,0 +1,30 @@
+[
+  {
+    "id": "DOC-1",
+    "tech": "Doctrine",
+    "pattern": "A new entity was found through the relationship",
+    "explication": "Tu essaies de persister une entité qui en contient une autre qui n'est pas encore persistée.",
+    "conseil": "Ajoute `cascade: ['persist']` sur la relation, ou persiste manuellement l'entité liée avant le flush."
+  },
+  {
+    "id": "DOC-2",
+    "tech": "Doctrine",
+    "pattern": "Column .+ cannot be null",
+    "explication": "Tu essaies d'insérer null dans une colonne qui a une contrainte NOT NULL.",
+    "conseil": "Soit rends le champ nullable dans l'entité (`nullable: true`), soit assure-toi de bien renseigner la valeur."
+  },
+  {
+    "id": "DOC-3",
+    "tech": "Doctrine",
+    "pattern": "There is no column with name .+ on table",
+    "explication": "Doctrine cherche une colonne qui n'existe pas dans la table — la migration n'est pas à jour.",
+    "conseil": "Lance `php bin/console doctrine:migrations:migrate` ou `doctrine:schema:update --force`."
+  },
+  {
+    "id": "DOC-4",
+    "tech": "Doctrine",
+    "pattern": "The association .+ refers to the owning side field .+ which does not exist",
+    "explication": "La configuration d'une relation bidirectionnelle est incohérente entre les deux entités.",
+    "conseil": "Vérifie que `mappedBy` et `inversedBy` se correspondent exactement entre tes deux entités."
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "id": "GIT-1",
+    "tech": "Git",
+    "pattern": "CONFLICT",
+    "explication": "Deux branches ont modifié le même fichier aux mêmes endroits et Git ne sait pas quoi garder.",
+    "conseil": "Ouvre les fichiers en conflit, choisis les bonnes modifications entre `<<<<<<` et `>>>>>>`, puis `git add` et `git commit`."
+  },
+  {
+    "id": "GIT-2",
+    "tech": "Git",
+    "pattern": "rejected.+non-fast-forward",
+    "explication": "Ta branche locale est en retard sur la branche distante — tu ne peux pas push directement.",
+    "conseil": "Fais d'abord `git pull --rebase` puis repush. Ou `git pull` si tu préfères un merge commit."
+  },
+  {
+    "id": "GIT-3",
+    "tech": "Git",
+    "pattern": "detached HEAD",
+    "explication": "Tu es sur un commit spécifique et non sur une branche — tes futurs commits seront perdus si tu changes de branche.",
+    "conseil": "Crée une branche maintenant : `git switch -c ma-branche` pour sauvegarder ton travail."
+  }
+]

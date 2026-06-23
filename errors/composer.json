@@ -1,0 +1,16 @@
+[
+  {
+    "id": "COM-1",
+    "tech": "Composer",
+    "pattern": "Your requirements could not be resolved",
+    "explication": "Composer ne peut pas installer les packages car il y a un conflit de versions entre dépendances.",
+    "conseil": "Lis les lignes de conflit dans le message. Essaie `composer update --with-dependencies`. Parfois il faut adapter la contrainte de version dans `composer.json`."
+  },
+  {
+    "id": "COM-2",
+    "tech": "Composer",
+    "pattern": "Class .+ located in .+ does not comply with psr-4",
+    "explication": "Le nom de la classe ou son namespace ne correspond pas au chemin du fichier (règle PSR-4).",
+    "conseil": "Le namespace doit refléter le chemin du fichier. Ex: `App\\Models\\User` → `app/Models/User.php`."
+  }
+]

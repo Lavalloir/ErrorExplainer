@@ -1,0 +1,16 @@
+[
+  {
+    "id": "VIT-1",
+    "tech": "Vite",
+    "pattern": "Failed to resolve import",
+    "explication": "Vite ne trouve pas le module que tu importes.",
+    "conseil": "Vérifie le chemin d'import et que le package est bien dans `node_modules`. Pour les alias (`@/`), configure-les dans `vite.config.js`."
+  },
+  {
+    "id": "VIT-2",
+    "tech": "Vite",
+    "pattern": "Rollup failed to resolve",
+    "explication": "Pendant le build de production, Rollup ne trouve pas un import.",
+    "conseil": "Même cause que 'Failed to resolve import'. Vérifie aussi que tu n'importes pas un module Node.js côté browser."
+  }
+]
