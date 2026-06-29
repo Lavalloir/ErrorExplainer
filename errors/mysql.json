@@ -1,37 +1,27 @@
 [
-  {
-    "id": "MYS-1",
-    "tech": "MySQL",
-    "pattern": "Table .+ doesn't exist",
-    "explication": "La table SQL que tu interroges n'existe pas dans la base de données.",
-    "conseil": "Lance tes migrations (`php artisan migrate` ou `php bin/console doctrine:migrations:migrate`). Vérifie que tu es sur la bonne BDD."
-  },
-  {
-    "id": "MYS-2",
-    "tech": "MySQL",
-    "pattern": "Duplicate entry",
-    "explication": "Tu insères une valeur qui existe déjà sur un champ avec contrainte UNIQUE.",
-    "conseil": "Utilise `INSERT ... ON DUPLICATE KEY UPDATE` ou vérifie l'existence avant d'insérer."
-  },
-  {
-    "id": "MYS-3",
-    "tech": "MySQL",
-    "pattern": "Cannot add or update a child row: a foreign key constraint",
-    "explication": "Tu essaies d'insérer/modifier un enregistrement avec une clé étrangère qui ne correspond à aucun enregistrement parent.",
-    "conseil": "Assure-toi que l'enregistrement parent existe avant d'insérer l'enfant. Vérifie l'ordre d'insertion."
-  },
-  {
-    "id": "MYS-4",
-    "tech": "MySQL",
-    "pattern": "Access denied for user",
-    "explication": "L'utilisateur MySQL n'a pas les droits sur cette base de données.",
-    "conseil": "Vérifie les credentials dans ton `.env`. Si c'est en local, vérifie les permissions dans phpMyAdmin ou avec `GRANT ALL`."
-  },
-  {
-    "id": "MYS-5",
-    "tech": "MySQL",
-    "pattern": "Data too long for column",
-    "explication": "Tu essaies d'insérer une valeur trop longue pour la colonne (VARCHAR(255) par exemple).",
-    "conseil": "Augmente la taille de la colonne en migration, ou tronque la valeur avant insertion."
-  }
+  {"id":"MYS-1","tech":"MySQL","pattern":"Table .+ doesn't exist","explication":"La table SQL que tu interroges n'existe pas dans la base de données.","conseil":"Lance tes migrations (`php artisan migrate` ou `php bin/console doctrine:migrations:migrate`). Vérifie que tu es sur la bonne BDD."},
+  {"id":"MYS-2","tech":"MySQL","pattern":"Duplicate entry","explication":"Tu insères une valeur qui existe déjà sur un champ avec contrainte UNIQUE.","conseil":"Utilise `INSERT ... ON DUPLICATE KEY UPDATE` ou vérifie l'existence avant d'insérer."},
+  {"id":"MYS-3","tech":"MySQL","pattern":"Cannot add or update a child row: a foreign key constraint","explication":"Tu essaies d'insérer/modifier un enregistrement avec une clé étrangère qui ne correspond à aucun enregistrement parent.","conseil":"Assure-toi que l'enregistrement parent existe avant d'insérer l'enfant. Vérifie l'ordre d'insertion."},
+  {"id":"MYS-4","tech":"MySQL","pattern":"Access denied for user","explication":"L'utilisateur MySQL n'a pas les droits sur cette base de données.","conseil":"Vérifie les credentials dans ton `.env`. Si c'est en local, vérifie les permissions dans phpMyAdmin ou avec `GRANT ALL`."},
+  {"id":"MYS-5","tech":"MySQL","pattern":"Data too long for column","explication":"Tu essaies d'insérer une valeur trop longue pour la colonne (VARCHAR(255) par exemple).","conseil":"Augmente la taille de la colonne en migration, ou tronque la valeur avant insertion."},
+  {"id":"MYS-6","tech":"MySQL","pattern":"Unknown column .+ in field list","explication":"Tu références une colonne qui n'existe pas dans la table.","conseil":"Vérifie le nom exact de la colonne dans ta table. Lance `DESCRIBE nom_table;` pour voir toutes les colonnes disponibles."},
+  {"id":"MYS-7","tech":"MySQL","pattern":"Column .+ cannot be null","explication":"Tu essaies d'insérer NULL dans une colonne définie NOT NULL.","conseil":"Passe une valeur non-null, ou modifie la colonne pour accepter NULL : `ALTER TABLE ma_table MODIFY ma_colonne VARCHAR(255) NULL`."},
+  {"id":"MYS-8","tech":"MySQL","pattern":"You have an error in your SQL syntax","explication":"Erreur de syntaxe SQL — un mot-clé mal orthographié, un guillemet manquant, ou une virgule en trop.","conseil":"Lis la partie 'near' dans le message — elle indique où la syntaxe est incorrecte. Teste ta requête directement dans phpMyAdmin."},
+  {"id":"MYS-9","tech":"MySQL","pattern":"Lost connection to MySQL server","explication":"La connexion à MySQL a été perdue pendant l'exécution d'une requête — timeout ou requête trop longue.","conseil":"Augmente `wait_timeout` et `interactive_timeout` dans la config MySQL. Vérifie que ta requête ne prend pas trop longtemps. Implémente une reconnexion automatique."},
+  {"id":"MYS-10","tech":"MySQL","pattern":"Too many connections","explication":"Le nombre maximum de connexions simultanées à MySQL est atteint.","conseil":"Augmente `max_connections` dans `my.cnf`. Ferme les connexions inutilisées. Utilise un pool de connexions. Vérifie les connexions ouvertes avec `SHOW PROCESSLIST;`."},
+  {"id":"MYS-11","tech":"MySQL","pattern":"Deadlock found when trying to get lock","explication":"Deux transactions se bloquent mutuellement en attendant les locks de l'autre.","conseil":"Réessaie la transaction — les deadlocks sont transitoires. Accède toujours aux tables dans le même ordre. Garde les transactions courtes."},
+  {"id":"MYS-12","tech":"MySQL","pattern":"Lock wait timeout exceeded","explication":"Une transaction attend trop longtemps pour obtenir un lock sur une ligne ou une table.","conseil":"Vérifie avec `SHOW PROCESSLIST;` quelle transaction bloque. Annule les transactions longues. Réduis la durée de tes transactions."},
+  {"id":"MYS-13","tech":"MySQL","pattern":"The MySQL server is running with the --read-only option","explication":"Le serveur MySQL est en mode lecture seule — souvent un réplica ou une base de données de production protégée.","conseil":"Vérifie que tu es connecté au bon serveur (pas un réplica). En prod, les écritures doivent aller sur le master."},
+  {"id":"MYS-14","tech":"MySQL","pattern":"Incorrect integer value|Incorrect datetime value|Incorrect date value","explication":"Tu insères une valeur dans un format incorrect pour le type de la colonne.","conseil":"Vérifie le format attendu : les dates doivent être en `YYYY-MM-DD`, les datetimes en `YYYY-MM-DD HH:MM:SS`. Convertis avant d'insérer si nécessaire."},
+  {"id":"MYS-15","tech":"MySQL","pattern":"Out of range value for column","explication":"La valeur numérique dépasse la plage autorisée pour le type de colonne (ex: INT trop grand).","conseil":"Utilise un type plus grand : `BIGINT` au lieu de `INT`, ou `DECIMAL(10,2)` pour les décimaux. Vérifie les valeurs négatives sur des colonnes UNSIGNED."},
+  {"id":"MYS-16","tech":"MySQL","pattern":"Can't connect to MySQL server","explication":"Impossible de se connecter au serveur MySQL — serveur arrêté, mauvaise adresse, ou port bloqué.","conseil":"Vérifie que MySQL tourne : `sudo service mysql status`. Vérifie l'hôte et le port dans ta config. Sur WAMP/XAMPP, démarre les services."},
+  {"id":"MYS-17","tech":"MySQL","pattern":"Unknown database","explication":"La base de données que tu essaies d'utiliser n'existe pas.","conseil":"Crée la base : `CREATE DATABASE nom_base;`. Vérifie le nom dans ta config `.env` ou `database.php`. Vérifie que tu es sur le bon serveur."},
+  {"id":"MYS-18","tech":"MySQL","pattern":"Table .+ is marked as crashed","explication":"La table MySQL est corrompue — souvent suite à un arrêt brutal du serveur.","conseil":"Répare la table : `REPAIR TABLE nom_table;`. Ou via la commande : `mysqlcheck -u root -p nom_base nom_table`. Fais une sauvegarde avant."},
+  {"id":"MYS-19","tech":"MySQL","pattern":"Specified key was too long","explication":"L'index que tu crées dépasse la limite de 767 bytes (ou 3072 avec innodb_large_prefix).","conseil":"Réduis la longueur de la colonne indexée. Utilise `utf8` au lieu de `utf8mb4` si tu n'as pas besoin des emojis. Ou active `innodb_large_prefix`."},
+  {"id":"MYS-20","tech":"MySQL","pattern":"Cannot delete or update a parent row: a foreign key constraint","explication":"Tu essaies de supprimer ou modifier un enregistrement parent qui a des enfants liés par clé étrangère.","conseil":"Supprime d'abord les enregistrements enfants. Ou configure la clé étrangère avec `ON DELETE CASCADE` pour la suppression automatique."},
+  {"id":"MYS-21","tech":"MySQL","pattern":"Operand should contain 1 column","explication":"Une sous-requête retourne plusieurs colonnes là où une seule est attendue.","conseil":"Assure-toi que ta sous-requête ne sélectionne qu'une colonne : `SELECT id FROM...` au lieu de `SELECT *`."},
+  {"id":"MYS-22","tech":"MySQL","pattern":"Subquery returns more than 1 row","explication":"Une sous-requête utilisée dans une comparaison retourne plusieurs lignes.","conseil":"Utilise `IN` au lieu de `=` : `WHERE id IN (SELECT id FROM...)`. Ou limite la sous-requête à un seul résultat avec `LIMIT 1`."},
+  {"id":"MYS-23","tech":"MySQL","pattern":"GROUP BY clause","explication":"Une colonne dans SELECT n'est ni dans GROUP BY ni dans une fonction d'agrégation.","conseil":"Ajoute la colonne dans le GROUP BY, ou utilise `ANY_VALUE()` si tu n'as pas besoin d'une valeur spécifique. Désactive `ONLY_FULL_GROUP_BY` en dev si nécessaire."},
+  {"id":"MYS-24","tech":"MySQL","pattern":"Division by zero","explication":"Une division par zéro dans une requête SQL.","conseil":"Protège ta division : `IF(diviseur = 0, NULL, dividende / diviseur)` ou `NULLIF(diviseur, 0)`."},
+  {"id":"MYS-25","tech":"MySQL","pattern":"Disk full|No space left on device","explication":"Le disque du serveur MySQL est plein.","conseil":"Libère de l'espace disque. Purge les logs MySQL. Optimise les tables avec `OPTIMIZE TABLE`. Envisage d'augmenter l'espace de stockage."}
 ]
