@@ -7,7 +7,6 @@
 </head>
 <body>
 
-  <!-- ===== HEADER ===== -->
   <div class="header">
     <img src="icons/icon.png" style="width:28px;height:28px;border-radius:7px;" alt="Logo" />
     <div>
@@ -16,22 +15,14 @@
     </div>
   </div>
 
-  <!-- ===== ZONE DE SAISIE ===== -->
   <div class="input-area">
 
-    <!-- Bannière affichée quand une page d'erreur est détectée automatiquement -->
-    <div class="auto-detected-banner" id="autoDetectedBanner">
-      <span>⚡</span>
-      <span id="autoDetectedLabel">Page d'erreur détectée</span>
-    </div>
-
-    <!-- Filtre optionnel par technologie -->
     <div class="tech-select-row">
       <label for="techSelect">Tech :</label>
       <select id="techSelect">
         <option value="">— Toutes —</option>
         <option value="axios">Axios</option>
-        <option value="composer">Composer</option>
+        <option value="composerphp">Composer</option>
         <option value="css">CSS</option>
         <option value="csharp">C#</option>
         <option value="docker">Docker</option>
@@ -51,10 +42,9 @@
       </select>
     </div>
 
-    <!-- Zone de saisie de l'erreur -->
     <textarea
       id="errorInput"
-      placeholder="Colle ton message d'erreur ici…&#10;&#10;Ex: Call to a member function getId() on null&#10;Ex: No route found for GET /admin/users"
+      placeholder="Colle ton message d'erreur ici…&#10;&#10;Ex: Call to a member function getId() on null"
     ></textarea>
 
     <div class="actions">
@@ -64,7 +54,6 @@
 
   </div>
 
-  <!-- ===== ZONE DE RÉSULTAT ===== -->
   <div class="result-area" id="resultArea">
     <div class="result-empty">
       <span>🛠️</span>
